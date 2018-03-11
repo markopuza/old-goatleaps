@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  background: linear-gradient(to bottom right, #C24641, #FBB117);
+}
+</style>
+<body>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+var width = window.innerWidth,
+    height = window.innerHeight,
+    rad = Math.min(width, height) / 2.35 - 30
+var n = 12,
+    m = 12,
+    degrees = 180 / Math.PI;
+var fishes = d3.range(n).map(function(i) {
+  return {
+    x: rad * Math.cos(2 * Math.PI * i / 12),
+    y: rad * Math.sin(2 * Math.PI * i / 12),
+    angle: 0,
+    jaw_angle: Math.random()*2*Math.PI,
+    speed: 0.7 + (Math.random() - 0.5)*0.4,
+    wobble_angle: 0,
+    wobble: 0.01 + Math.random()*0.03
+  };
+});
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+svg.append("image")
+  .attr("xlink:href", "image/circle.png")
+  .attr("width", "25%")
+  .attr("height", "100%")
+  .attr("x", "38%");
+var g = svg.append("g")
+    .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+    .selectAll("g")
+    .data(fishes)
+    .enter();
+var fish = g.append("g");
+var flipper = fish.append("g")
+    .attr("transform", "translate(0, " + (-height/2) + ")")
+    .append("image")
+    .attr("width", "30")
+    .attr("height", "100%")
+    .attr("x", -29)
+    .attr("y", -2)
+    .attr("xlink:href", "image/flipper.png");
+var lower = fish.append("g")
+    .attr("transform", "translate(0, " + (-height/2) + ")")
+    .append("image")
+    .attr("width", "100")
+    .attr("height", "100%")
+    .attr("x", 0)
+    .attr("y", 5)
+    .attr("xlink:href", "image/lower.png");
+  var upper = fish.append("g")
+      .attr("transform", "translate(0, " + (-height/2) + ")")
+      .append("image")
+      .attr("width", "100")
+      .attr("height", "100%")
+      .attr("x", 0)
+      .attr("y", -20)
+      .attr("xlink:href", "image/upper.png");
+d3.timer(function() {
+  for (var i = 0; i < n; i++){
+    var fish = fishes[i];
+    fish.angle += 2*Math.PI / 1200;
+    fish.angle %= 2*Math.PI;
+    fish.x = rad * Math.cos(2 * Math.PI * i / 12 + fish.angle);
+    fish.y = rad * Math.sin(2 * Math.PI * i / 12 + fish.angle);
+    fish.jaw_angle += fish.speed * (0.001 + 0.05 * Math.abs(Math.sin(fish.jaw_angle)));
+    fish.jaw_angle %= 2*Math.PI;
+    if (fish.jaw_angle < 0.05 && Math.random > 0.8) {
+      fish.speed = (Math.random() - 0.5)*0.4;
+    }
+    fish.wobble_angle += fish.wobble;
+    fish.wobble_angle %= 2*Math.PI;
+  }
+  update();
+});
+function update() {
+  fish.attr("transform", function(d) {
+    return "translate(" + d.x + "," + d.y + ")scale(0.75)rotate(" + Math.sin(d.wobble_angle)*25 + ")";
+  });
+  upper.attr("transform", function(d) {
+    return "rotate(" + d.jaw_angle*degrees + " " + 0 + " " + height/2 + ")";
+  });
+  lower.attr("transform", function(d) {
+    return "rotate(" + (-d.jaw_angle)*degrees + " " + 0 + " " + height/2 + ")";
+  });
+}
+</script>
