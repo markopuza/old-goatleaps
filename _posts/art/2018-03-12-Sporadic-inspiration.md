@@ -21,7 +21,7 @@ categories: art media
     feed.run();
 </script>
 
-<p align="center"> Irregular dose of quality art. </p>
+<p align="center"> Irregular dose of quality art. Follow on <a href="https://www.instagram.com/sporadic_inspiration/"> >> Instagram  <<</a>. </p>
 
 <img src="{{ site.baseurl }}/assets/icon/sporadic.png" align="left" style="width:60px; margin-right: 10px;">
 <h2> Most recent artwork </h2>
