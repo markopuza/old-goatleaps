@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-The website is till being built.
+The website is still under construction.
