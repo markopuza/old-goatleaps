@@ -11,6 +11,7 @@ permalink: /recent/
     <th> Date </th>
   </tr>
     {% for post in site.posts %}
+    {% unless post.categories contains 'noshow' %}
     <tr>
       {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
       <td>
@@ -25,5 +26,6 @@ permalink: /recent/
         <span class="post-meta"> {{ post.date | date: date_format }}</span>
       </td>
     </tr>
+    {% endunless %}
     {% endfor %}
 </table>

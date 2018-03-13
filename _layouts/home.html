@@ -11,22 +11,6 @@ layout: default
 
     <h2 class="post-list-heading"> Recent posts </h2>
 
-    <!-- <ul class="post-list">
-      {% for post in site.posts %}
-      <li>
-        {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
-        <div>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-          <span class="post-meta"> {{ post.date | date: date_format }}</span>
-        </div>
-        {% if site.show_excerpts %}
-          {{ post.excerpt }}
-        {% endif %}
-      </li>
-      {% endfor %}
-    </ul> -->
 
     <table class="clean-table"> <tr>
       <td style="width: 60%;" valign="top">
@@ -37,7 +21,8 @@ layout: default
               <th> Category </th>
               <th> Date </th>
             </tr>
-              {% for post in site.posts limit: 10 %}
+              {% for post in site.posts limit: 12 %}
+              {% unless post.categories contains 'noshow' %}
               <tr>
                 {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
                 <td width="50%">
@@ -52,6 +37,7 @@ layout: default
                   <span class="post-meta"> {{ post.date | date: date_format }}</span>
                 </td>
               </tr>
+              {% endunless %}
               {% endfor %}
           </table>
         </td>
