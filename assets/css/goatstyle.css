@@ -163,10 +163,10 @@ pre {
   margin-left: auto;
   padding-right: 30px;
   padding-left: 30px; }
-  @media screen and (max-width: 80%) {
+  @media screen and (max-width: 481px) {
     .wrapper {
-      max-width: -webkit-calc(80% - (30px));
-      max-width: calc(80% - (30px));
+      max-width: -webkit-calc(100% - (30px));
+      max-width: calc(100% - (30px));
       padding-right: 15px;
       padding-left: 15px; } }
 
