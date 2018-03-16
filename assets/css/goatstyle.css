@@ -119,8 +119,7 @@ code {
   padding: 1px 5px; }
 
 pre {
-  padding: 8px 12px;
-  overflow-x: auto; }
+  padding: 8px 12px; }
   pre > code {
     border: 0;
     padding-right: 0;
@@ -163,7 +162,7 @@ pre {
   margin-left: auto;
   padding-right: 30px;
   padding-left: 30px; }
-  @media screen and (max-width: 481px) {
+  @media screen and (max-width: 1000px) {
     .wrapper {
       max-width: -webkit-calc(100% - (30px));
       max-width: calc(100% - (30px));
@@ -283,7 +282,7 @@ table {
     /* border-radius: 3px; */
     letter-spacing: 1px;
       /* background-color: #aaa; */
-    padding: 6px;
+    padding: 3px;
     /* border: 1px solid #999; */
     line-height: 1.5; }
     .site-nav .page-link:not(:last-child) {
@@ -365,7 +364,7 @@ table {
   width: -webkit-calc(45% - (30px / 2));
   width: calc(45% - (30px / 2)); }
 
-@media screen and (max-width: 481px) {
+@media screen and (max-width: 1000px) {
   .footer-col-1,
   .footer-col-2 {
     width: -webkit-calc(50% - (30px / 2));
@@ -374,7 +373,7 @@ table {
   .footer-col-3 {
     width: -webkit-calc(100% - (30px / 2));
     width: calc(100% - (30px / 2)); } }
-@media screen and (max-width: 481px) {
+@media screen and (max-width: 1000px) {
   .footer-col {
     float: none;
     width: -webkit-calc(100% - (30px / 2));
@@ -435,17 +434,17 @@ table {
   margin-bottom: 30px; }
   .post-content h2 {
     font-size: 32px; }
-    @media screen and (max-width: 481px) {
+    @media screen and (max-width: 1000px) {
       .post-content h2 {
         font-size: 28px; } }
   .post-content h3 {
     font-size: 26px; }
-    @media screen and (max-width: 481px) {
+    @media screen and (max-width: 1000px) {
       .post-content h3 {
         font-size: 22px; } }
   .post-content h4 {
     font-size: 20px; }
-    @media screen and (max-width: 481px) {
+    @media screen and (max-width: 1000px) {
       .post-content h4 {
         font-size: 18px; } }
 
