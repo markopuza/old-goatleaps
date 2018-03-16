@@ -163,10 +163,10 @@ pre {
   padding-left: 30px; }
   @media screen and (max-width: 1000px) {
     .wrapper {
-      max-width: -webkit-calc(100% - (30px));
-      max-width: calc(100% - (30px));
-      padding-right: 15px;
-      padding-left: 15px; } }
+      max-width: -webkit-calc(100% - 4px);
+      max-width: calc(100% - 4px);
+      padding-right: 2px;
+      padding-left: 2px; } }
 
 /**
  * Clearfix
