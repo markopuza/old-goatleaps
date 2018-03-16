@@ -4,6 +4,7 @@ title:  "Sporadic inspiration"
 date:   2018-03-12 01:38:59 +0000
 category-string: "Art"
 categories: art media
+icon: sporadicicon
 ---
 
 <script type="text/javascript" src="/assets/script/instafeed.min.js"></script>

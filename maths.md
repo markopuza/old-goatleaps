@@ -16,6 +16,7 @@ permalink: /maths/
         {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
         <div>
           <a class="post-link" href="{{ post.url | relative_url }}">
+          <img class="post-icon" src="/assets/icon/{{ post.icon }}.png">
             {{ post.title | escape }}
           </a>
           <span class="post-meta"> {{ post.date | date: date_format }}</span>
@@ -29,8 +30,8 @@ permalink: /maths/
 
   </div>
   <div class="column">
-    <h3>Project Euler </h3>
     <img src="https://projecteuler.net/profile/sparkyyyy.png" style="padding-bottom:23px">
+
     <ul class="post-list">
       {% for post in site.posts %}
       <li>
@@ -38,6 +39,7 @@ permalink: /maths/
         {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
         <div>
           <a class="post-link" href="{{ post.url | relative_url }}">
+          <img class="post-icon" src="/assets/icon/{{ post.icon }}.png">
             {{ post.title | escape }}
           </a>
           <span class="post-meta"> {{ post.date | date: date_format }}</span>

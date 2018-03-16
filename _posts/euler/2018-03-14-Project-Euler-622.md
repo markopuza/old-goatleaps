@@ -4,6 +4,7 @@ title:  "Project Euler 622"
 date:   2018-03-14 01:36:59 +0000
 category-string: "Maths"
 categories: euler maths
+icon: euler622
 ---
 # Riffle Shuffles
 

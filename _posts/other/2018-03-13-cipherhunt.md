@@ -4,6 +4,7 @@ title:  "Cipher Hunt"
 date:   2018-03-13
 category-string: "Other"
 categories: other
+icon: ciphericon
 ---
 
 During the first semester of the 2017/18 university year I took part in organisation of a Cipherhunt (together with a great deal of work by [>>Simon<<](https://uk.linkedin.com/in/simon-holm-b57578106) and [>>Lukas<<](https://github.com/lcapkovic)). This involved

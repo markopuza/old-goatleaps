@@ -4,6 +4,7 @@ title:  "Project Euler 621"
 date:   2018-03-06 01:36:59 +0000
 category-string: "Maths"
 categories: euler maths
+icon: euler621
 ---
 # Expressing an integer as the sum of triangular numbers
 

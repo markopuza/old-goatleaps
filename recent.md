@@ -14,6 +14,7 @@ permalink: /recent/
     <div class="row">
       <div class="column">
         <a class="post-link" href="{{ post.url | relative_url }}">
+        <img class="post-icon" src="/assets/icon/{{ post.icon }}.png">
           {{ post.title | escape }}
         </a>
       </div>

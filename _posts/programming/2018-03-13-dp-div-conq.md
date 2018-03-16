@@ -4,6 +4,7 @@ title:  "Dynamic programming - divide and conquer optimisation"
 date:   2018-03-13 01:38:59 +0000
 category-string: "Programming"
 categories: programming
+icon: divconq
 ---
 
 During the recent HackerRank's competition _101 Hack 53_ I stumbled upon a very nice >>[problem](https://www.hackerrank.com/contests/101hack53/challenges/optimal-bus-stops/)<< which involves
