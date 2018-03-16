@@ -6,7 +6,6 @@
    src: url("/assets/euler.otf");
  }
 
-
 /**
  * Reset some basic elements
  */
@@ -157,8 +156,8 @@ pre {
  * Wrapper
  */
 .wrapper {
-  max-width: -webkit-calc(867px - (30px * 2));
-  max-width: calc(867px - (30px * 2));
+  max-width: -webkit-calc(80% - (30px * 2));
+  max-width: calc(80% - (30px * 2));
   margin-right: auto;
   margin-left: auto;
   padding-right: 30px;
