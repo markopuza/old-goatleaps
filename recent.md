@@ -4,6 +4,7 @@ title: Recent
 permalink: /recent/
 ---
 
+<div style="overflow-x: auto;">
 <table class="recent-table">
   <tr>
     <th> Post </th>
@@ -29,3 +30,4 @@ permalink: /recent/
     {% endunless %}
     {% endfor %}
 </table>
+</div>
