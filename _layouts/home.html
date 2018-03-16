@@ -12,10 +12,73 @@ layout: default
     <h2 class="post-list-heading"> Recent posts </h2>
 
     <div style="overflow-x: auto;">
+
+
+      <div class="row">
+        <div class="column" style="width:60%;">
+          <h2></h2>
+
+          <p> Chronological list of most recent posts across all categories. </p>
+          <ul class="post-list">
+            {% for post in site.posts limit: 15 %}
+            <li>
+              {% if  true %}
+              {% unless post.categories contains 'noshow' %}
+              {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+              <div>
+                <a class="post-link" href="{{ post.url | relative_url }}">
+                  {{ post.title | escape }}
+                </a>
+                <span class="post-meta"> {{ post.date | date: date_format }}</span>
+              </div>
+              {% endunless %}
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+
+
+        </div>
+        <div class="column" style="width:40%;">
+          <img src="/assets/image/goat_leap.png" style="float:right;  width:25%;">
+          <p>
+            I am a student, based in Edinburgh, Scotland. I have studied Computer science & Mathematics at the University of Edinburgh
+          <span><img src="/assets/image/edi.png" style="top-margin:-40px; witdth:20%;"></span>
+          </p>
+
+          <p> and this is meant to be my experimental website. I will publish here anything that I find worthwhile. This
+           will include <i> competitive programming </i> and <i> problem solving </i> strategies, <i> Project Euler </i> solutions, clear code and many other things that I find neat.
+          </p>
+
+        </div>
+      </div>
+
+
+
+      <!--
     <table class="clean-table"> <tr>
       <td style="width: 60%;" valign="top">
           <p> Chronological list of most recent posts across all categories. </p>
-          <table class="recent-table">
+          <ul class="post-list">
+            {% for post in site.posts limit: 15 %}
+            <li>
+              {% if  true %}
+              {% unless post.categories contains 'noshow' %}
+              {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+              <div>
+                <a class="post-link" href="{{ post.url | relative_url }}">
+                  {{ post.title | escape }}
+                </a>
+                <span class="post-meta"> poop{{ post.date | date: date_format }}</span>
+              </div>
+              {% endunless %}
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul> -->
+
+
+          <!-- <table class="recent-table">
             <tr>
               <th> Post </th>
               <th> Category </th>
@@ -39,8 +102,8 @@ layout: default
               </tr>
               {% endunless %}
               {% endfor %}
-          </table>
-        </td>
+          </table> -->
+        <!-- </td>
 
          <td style="width: 40%;" valign="top">
           <img src="/assets/image/goat_leap.png" style="float:right;  width:25%;">
@@ -52,7 +115,7 @@ layout: default
           <p> and this is meant to be my experimental website. I will publish here anything that I find worthwhile. This
            will include <i> competitive programming </i> and <i> problem solving </i> strategies, <i> Project Euler </i> solutions, clear code and many other things that I find neat.
           </p>
-        </td>
+        </td> -->
 
   </tr></table></div>
 </div>
