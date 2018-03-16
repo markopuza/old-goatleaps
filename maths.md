@@ -31,7 +31,9 @@ permalink: /maths/
   </div>
   <div class="column">
     <img src="https://projecteuler.net/profile/sparkyyyy.png" style="padding-bottom:23px">
-
+    <p>
+     Below, you can find some guidance for Project Euler problems. If you are looking for a readily available copy/paste answer, you will not find it here. All of the code snippets in the posts have been stripped of some crucial lines (these are clearly marked). It is my aim that anyone able to replicate the answer based on such snippets will have to understand the solution conceptually in the first place.
+    </p>
     <ul class="post-list">
       {% for post in site.posts %}
       <li>
