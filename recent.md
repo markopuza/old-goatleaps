@@ -5,29 +5,26 @@ permalink: /recent/
 ---
 
 <div style="overflow-x: auto;">
-<table class="recent-table">
-  <tr>
-    <th> Post </th>
-    <th> Category </th>
-    <th> Date </th>
-  </tr>
-    {% for post in site.posts %}
+<ul class="post-list">
+  {% for post in site.posts limit: 15 %}
+  <li>
+    {% if  true %}
     {% unless post.categories contains 'noshow' %}
-    <tr>
-      {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
-      <td>
+    {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+    <div class="row">
+      <div class="column">
         <a class="post-link" href="{{ post.url | relative_url }}">
           {{ post.title | escape }}
         </a>
-      </td>
-      <td>
-        {{ post.category-string }}
-      </td>
-      <td>
-        <span class="post-meta"> {{ post.date | date: date_format }}</span>
-      </td>
-    </tr>
+      </div>
+
+      <div class="column">
+      <span> {{ post.category-string }}  </span> <span class="post-meta">{{ post.date | date: date_format }}</span>
+    </div>
+    </div>
     {% endunless %}
-    {% endfor %}
-</table>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
 </div>
