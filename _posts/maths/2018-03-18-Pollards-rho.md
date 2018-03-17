@@ -77,7 +77,37 @@ def pollards_rho(n, x0=2, f=lambda x: x*x + 1, max_iter=10**6):
 
 Here, I have included an upper bound on the length of the sequence $$\{x_i\}$$, so we avoid infinite loops by giving up prematurely. It is important to note that, whether due to the generation of $$x_i$$ being non-random or due to $$n$$ being a prime (power), _the Pollard's rho algorithm as described may not terminate_. For any practical applications it is reasonable to check whether your integer is a prime power before starting Pollard's rho. As a general consequence of how we reasoned about the algorithm, the smaller factor your integer has, the faster Pollard's rho will tend to be. This is why it was successful with factoring $$F_8$$, whose first factor 1238926361552897 is relatively "small".
 
-As the last thing, let's see how the above procedure deals with randomly chosen integers between $$10^{19}$$ and $$10^{20}$$, running on PyPy3, 2.7 GHz Intel Core i5:
+As the last thing, let's see how the above procedure deals with randomly chosen integers between $$10^{19}$$ and $$10^{20}$$, running on PyPy3, 2.7 GHz Intel Core i5. You can also try it by yourself below:
+
+<script type="text/javascript" src="/assets/script/bigint.min.js"></script>
+<script>
+function pollardsRho(n, x0 = bigInt(2), f = (x => x.multiply(x).plus(1)), maxIter = 100000) {
+    x = x0; y = x0;
+    for (var i = 0; i < maxIter; i++) {
+        x = f(x).mod(n); y = f(f(y).mod(n)).mod(n);
+        d = bigInt.gcd(x.minus(y).abs(), n);
+        if (d.gt(1)) { return d; }
+    }
+    return bigInt(1);
+}
+
+function runRho() {
+  var input = document.getElementById("input").value;
+  var n = bigInt(input);
+  var factor = pollardsRho(n);
+  document.getElementById("isPrime").innerHTML = 'Is (probably) prime: ' + n.isProbablePrime().toString();
+  document.getElementById("result").innerHTML = n.toString() + ' = ' + factor.toString() + ' x ' + n.divide(factor).toString();
+}
+</script>
+
+
+<center>
+<input id="input" type="text" style="width:50%" value="96764544874272622169"/>
+<button type="button" onClick="runRho();"> Run Pollard's rho </button>
+<p id="isPrime"></p>
+<p id="result"></p>
+</center>
+
 
 | Integer $$n$$    | Factorization           | Time taken (s)  | Notes |
 | ------------- |:-------------:| -----:| ---------:|
