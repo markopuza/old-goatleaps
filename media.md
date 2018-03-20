@@ -30,7 +30,7 @@ permalink: /media/
 
   </div>
   <div class="column">
-    <a href="/art/media/2018/03/12/Sporadic-inspiration.html"><img src="{{ site.baseurl }}/assets/icon/sporadic.png" align="left" style="width:40%; margin-right: 10px;"></a>
+    <a href="/art/media/Sporadic-inspiration.html"><img src="{{ site.baseurl }}/assets/icon/sporadic.png" align="left" style="width:40%; margin-right: 10px;"></a>
 
   </div>
 </div>
