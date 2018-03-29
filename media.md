@@ -29,8 +29,19 @@ permalink: /media/
 
 
   </div>
-  <div class="column">
-    <a href="/art/media/Sporadic-inspiration.html"><img src="{{ site.baseurl }}/assets/icon/sporadic.png" align="left" style="width:40%; margin-right: 10px;"></a>
-
+  <div class="column" align="center">
+    <h1> Sporadic inspiration </h1>
+    <a href="/art/media/Sporadic-inspiration.html"><img src="{{ site.baseurl }}/assets/icon/sporadic.png" align="center" style="width:40%; margin-right: 10px;"></a>
   </div>
+</div>
+
+
+<div align="center">
+  <h1> The Chaos game </h1>
+  <a class="post-link" href="/media/maths/programming/tools/The-Chaos-Game.html">
+  <img src="/assets/image/chaos_game_gallery/1.png" style="width:22%;">
+  <img src="/assets/image/chaos_game_gallery/2.png" style="width:22%;">
+  <img src="/assets/image/chaos_game_gallery/3.png" style="width:22%;">
+  <img src="/assets/image/chaos_game_gallery/7.png" style="width:22%;">
+  </a>
 </div>
