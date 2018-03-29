@@ -64,7 +64,7 @@ icon: chaosgame
 The Chaos game is a simple iterative way to create fractals. The only thing we need to keep track of is a single point; at each iteration it is moved towards a randomly chosen vertex. You can find a more detailed description at the bottom of this page, as well as a small gallery.
 
 # Meanwhile, can you create your own unique fractal?
-Be cautious with the number of samples; the image is rendered in your browser.
+Be cautious with the number of samples; the image is rendered in your browser. Feel free to send me your creation!
 
 <div class="slidecontainer">
   <input type="range" min="3" max="25" value="4" class="slider" id="n_slider" oninput="update_n()">
@@ -349,6 +349,7 @@ random_settings();
 </script>
 
 ### Gallery
+<div aling="center">
 <img src="/assets/image/chaos_game_gallery/1.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/2.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/3.png" style="width:23%;">
@@ -358,6 +359,15 @@ random_settings();
 <img src="/assets/image/chaos_game_gallery/6.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/7.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/8.png" style="width:23%;">
+</div>
+
+### Fan-art
+Magnificent fractals made by Lukas:
+<div aling="center">
+<img src="/assets/image/chaos_game_gallery/fan1.png" style="width:23%;">
+<img src="/assets/image/chaos_game_gallery/fan2.png" style="width:23%;">
+</div>
+
 
 ### Description of the process
 The process follows the following steps:
