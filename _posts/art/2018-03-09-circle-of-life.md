@@ -9,7 +9,7 @@ icon: circleoflife
 
 This is an old idea digitalised as part of learning to use the JavaScript [d3](https://d3js.org) library.
 
-_(Safari sometimes needs a few refreshes do display the contents correctly)_
+_(Safari sometimes needs a few refreshes to display the contents correctly.)_
 
 <div style="margin:auto;">
 <iframe width="100%" height="600px" src="/assets/circle_of_life.html" scrolling="no"></iframe>
