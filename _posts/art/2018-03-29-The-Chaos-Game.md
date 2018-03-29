@@ -40,8 +40,8 @@ icon: chaosgame
 }
 
 .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
+    width: 12px;
+    height: 12px;
     background: #4CAF50;
     cursor: pointer;
 }
@@ -67,26 +67,26 @@ The Chaos game is a simple iterative way to create fractals. The only thing we n
 Be cautious with the number of samples; the image is rendered in your browser.
 
 <div class="slidecontainer">
-  <p id="n_slider_output" style="font-weight:bold;"> Number of vertices: 4 </p>
   <input type="range" min="3" max="25" value="4" class="slider" id="n_slider" oninput="update_n()">
+  <p id="n_slider_output" style="font-weight:bold;"> Number of vertices: 4 </p>
 
-  <p id="samples_output" style="font-weight:bold;"> Number of samples: 100000 </p>
   <input type="range" min="5000" max="500000" value="100000" step="5000" class="slider" id="samples_slider" oninput="update_samples()">
+  <p id="samples_output" style="font-weight:bold;"> Number of samples: 100000 </p>
 
-  <p id="jump_output" style="font-weight:bold;"> Jumping ratio: 0.50 </p>
   <input type="range" min="0" max="1" value="0.5" step="0.02" class="slider" id="jump_slider" oninput="update_jump()">
+  <p id="jump_output" style="font-weight:bold;"> Jumping ratio: 0.50 </p>
 
-  <p id="rule_output" style="font-weight:bold;"> Rule: None </p>
   <input type="range" min="0" max="22" value="0" step="1" class="slider" id="rule_slider" oninput="update_rule()">
+  <p id="rule_output" style="font-weight:bold;"> Rule: None </p>
 
-  <p id="filter_output" style="font-weight:bold;"> Filter: Sporadic inspiration </p>
   <input type="range" min="0" max="5" value="1" step="1" class="slider" id="filter_slider" oninput="update_filter()">
+  <p id="filter_output" style="font-weight:bold;"> Filter: Sporadic inspiration </p>
 
-  <p id="filter_strength_output" style="font-weight:bold;"> Filter strength: 0.9 </p>
   <input type="range" min="0" max="1" value="0.9" step="0.025" class="slider" id="filter_strength_slider" oninput="update_filter_strength()">
+  <p id="filter_strength_output" style="font-weight:bold;"> Filter strength: 0.9 </p>
 
-  <p id="filter_size_output" style="font-weight:bold;"> Filter size: 1.0 </p>
   <input type="range" min="0" max="2" value="1" step="0.05" class="slider" id="filter_size_slider" oninput="update_filter_size()">
+  <p id="filter_size_output" style="font-weight:bold;"> Filter size: 1.0 </p>
 
   <p> </p>
   <button class="button" id="center_output" style="font-weight:bold;" onclick="update_center()"> Include center: NO </button>
