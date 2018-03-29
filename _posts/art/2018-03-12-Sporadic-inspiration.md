@@ -22,8 +22,9 @@ icon: sporadicicon
     feed.run();
 </script>
 
-Irregular dose of quality art. Follow on >>[Instagram](https://www.instagram.com/sporadic_inspiration/)<<.
+Irregular dose of quality art. Follow on >>[Instagram](https://www.instagram.com/sporadic_inspiration/)<<. <img src="{{ site.baseurl }}/assets/icon/sporadic.png" style="width:60px; margin-right: 10px;">
 
-<img src="{{ site.baseurl }}/assets/icon/sporadic.png" align="left" style="width:60px; margin-right: 10px;">
+<div align="center">
 <h2> Most recent artwork </h2>
-<div id="instafeed"></div>
+</div>
+<div id="instafeed" align="center"></div>
