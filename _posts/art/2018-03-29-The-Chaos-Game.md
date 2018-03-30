@@ -67,25 +67,25 @@ The Chaos game is a simple iterative way to create fractals. The only thing we n
 Be cautious with the number of samples; the image is rendered in your browser. Feel free to send me your creation!
 
 <div class="slidecontainer">
-  <input type="range" min="3" max="25" value="4" class="slider" id="n_slider" oninput="update_n()">
+  <input type="range" min="3" max="25" value="4" class="slider" id="n_slider" oninput="update_n()" style="width:95%;">
   <p id="n_slider_output" style="font-weight:bold;"> Number of vertices: 4 </p>
 
-  <input type="range" min="5000" max="500000" value="100000" step="5000" class="slider" id="samples_slider" oninput="update_samples()">
+  <input type="range" min="5000" max="500000" value="100000" step="5000" class="slider" id="samples_slider" oninput="update_samples()" style="width:95%;">
   <p id="samples_output" style="font-weight:bold;"> Number of samples: 100000 </p>
 
-  <input type="range" min="0" max="1" value="0.5" step="0.02" class="slider" id="jump_slider" oninput="update_jump()">
+  <input type="range" min="0" max="1" value="0.5" step="0.02" class="slider" id="jump_slider" oninput="update_jump()" style="width:95%;">
   <p id="jump_output" style="font-weight:bold;"> Jumping ratio: 0.50 </p>
 
-  <input type="range" min="0" max="22" value="0" step="1" class="slider" id="rule_slider" oninput="update_rule()">
+  <input type="range" min="0" max="22" value="0" step="1" class="slider" id="rule_slider" oninput="update_rule()" style="width:95%;">
   <p id="rule_output" style="font-weight:bold;"> Rule: None </p>
 
-  <input type="range" min="0" max="5" value="1" step="1" class="slider" id="filter_slider" oninput="update_filter()">
+  <input type="range" min="0" max="5" value="1" step="1" class="slider" id="filter_slider" oninput="update_filter()" style="width:95%;">
   <p id="filter_output" style="font-weight:bold;"> Filter: Sporadic inspiration </p>
 
-  <input type="range" min="0" max="1" value="0.9" step="0.025" class="slider" id="filter_strength_slider" oninput="update_filter_strength()">
+  <input type="range" min="0" max="1" value="0.9" step="0.025" class="slider" id="filter_strength_slider" oninput="update_filter_strength()" style="width:95%;">
   <p id="filter_strength_output" style="font-weight:bold;"> Filter strength: 0.9 </p>
 
-  <input type="range" min="0" max="2" value="1" step="0.05" class="slider" id="filter_size_slider" oninput="update_filter_size()">
+  <input type="range" min="0" max="2" value="1" step="0.05" class="slider" id="filter_size_slider" oninput="update_filter_size()" style="width:95%;">
   <p id="filter_size_output" style="font-weight:bold;"> Filter size: 1.0 </p>
 
   <p> </p>
