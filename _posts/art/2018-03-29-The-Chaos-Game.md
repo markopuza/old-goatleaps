@@ -359,6 +359,9 @@ random_settings();
 <img src="/assets/image/chaos_game_gallery/6.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/7.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/8.png" style="width:23%;">
+<p></p>
+<img src="/assets/image/chaos_game_gallery/9.png" style="width:23%;">
+<img src="/assets/image/chaos_game_gallery/10.png" style="width:23%;">
 </div>
 
 ### Fan-art
