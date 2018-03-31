@@ -65,7 +65,7 @@ Starting with $$x = y = 0$$, at each iteration, we perform the transformation:
 
 $$ (x, y) \mapsto \begin{pmatrix} a & b \\ c & d \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} + \begin{pmatrix} e \\ f \end{pmatrix}$$
 
-where the values $$a, b, c, d, e, f$$ are chosen from the following rows, with each row having its relative probability (the last column) of being chosen. That is the whole iterative process of creating the >>[Barnsley's fern](https://en.wikipedia.org/wiki/Barnsley_fern)<< fractal. Depending on how the parameters $$a,b,c,d,e,f$$ and the probabilities are chosen, once can end up with biologically convincing genera of ferns (check the presets below), as well as more abstract fractals. For more information, see the amazing book >>[Fractals Everywhere](https://www.amazon.co.uk/Fractals-Everywhere-Prof-Michael-Barnsley/dp/0120790610)<< by Prof. Michael Barnsley.
+where the values $$a, b, c, d, e, f$$ are chosen from the following rows, with each row having its relative probability (the last column) of being chosen. That is the whole iterative process of creating the >>[Barnsley's fern](https://en.wikipedia.org/wiki/Barnsley_fern)<< fractal. Depending on how the parameters $$a,b,c,d,e,f$$ and the probabilities are chosen, one can end up with biologically convincing genera of ferns (check the presets below), as well as more abstract fractals. For more information, see the amazing book >>[Fractals Everywhere](https://www.amazon.co.uk/Fractals-Everywhere-Prof-Michael-Barnsley/dp/0120790610)<< by Prof. Michael Barnsley.
 
 ### Can you create your own cool fern?
 
