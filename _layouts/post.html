@@ -31,4 +31,30 @@ layout: default
   {% endif %}
 
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+
+  <div style="width:98%; border-top: 3px solid black; padding-top: 20px;" align="center">
+    <h1> See also: </h1>
+      <img id="random_link_img" class="post-icon" src="/assets/icon/sporadic.png">
+      <a id="random_link_a" class="post-link" href="/art/media/Sporadic-inspiration.html">
+        Sporadic inspiration
+      </a>
+  </div>
 </article>
+
+<script>
+  // Choosing a random post recommendation
+  var allPosts = [
+    {% for post in site.posts %}
+    {% if  true %}
+    {% unless post.categories contains 'noshow' or post.categories contains 'euler' or post.title == page.title %}
+      ["{{ post.title }}", "{{ post.url }}", "/assets/icon/{{ post.icon }}.png"],
+    {% endunless %}
+    {% endif %}
+    {% endfor %}];
+
+  var random_post = allPosts[Math.floor(Math.random()*allPosts.length)];
+  console.log(random_post);
+  document.getElementById("random_link_img").src = random_post[2];
+  document.getElementById("random_link_a").href = random_post[1];
+  document.getElementById("random_link_a").innerHTML = random_post[0];
+</script>
