@@ -27,6 +27,7 @@ permalink: none
 markdown: kramdown
 theme: minima
 layout: single
+comments: true
 plugins:
   - jekyll-feed
 highlighter: rouge
