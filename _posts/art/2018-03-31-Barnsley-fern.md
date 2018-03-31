@@ -345,8 +345,6 @@ Magnificent Borovica made by Olivia:
     }
   }
 
-  draw_fern();
-
   function set_preset(name) {
     fern = ferns[name];
     for (key in fern) {
@@ -679,4 +677,7 @@ Magnificent Borovica made by Olivia:
               "p4": 0.25
             }
   }
+
+  // Randomly choose a fern to draw at refresh
+  set_preset(["barnsley", "barnsley2", "cyclosorus", "culcita", "fishbone"][Math.floor(5 * Math.random())]);
 </script>
