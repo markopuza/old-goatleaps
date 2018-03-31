@@ -371,6 +371,12 @@ Magnificent fractals made by Lukas:
 <img src="/assets/image/chaos_game_gallery/fan2.png" style="width:23%;">
 </div>
 
+Gerda's astounding dotty fractals:
+<div align="center">
+<img src="/assets/image/chaos_game_gallery/gerda1.png" style="width:23%;">
+<img src="/assets/image/chaos_game_gallery/gerda2.png" style="width:23%;">
+</div>
+
 
 ### Description of the process
 The process follows the following steps:
