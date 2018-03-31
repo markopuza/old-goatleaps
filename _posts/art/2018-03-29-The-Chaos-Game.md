@@ -349,7 +349,7 @@ random_settings();
 </script>
 
 ### Gallery
-<div aling="center">
+<div align="center">
 <img src="/assets/image/chaos_game_gallery/1.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/2.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/3.png" style="width:23%;">
@@ -366,7 +366,7 @@ random_settings();
 
 ### Fan-art
 Magnificent fractals made by Lukas:
-<div aling="center">
+<div align="center">
 <img src="/assets/image/chaos_game_gallery/fan1.png" style="width:23%;">
 <img src="/assets/image/chaos_game_gallery/fan2.png" style="width:23%;">
 </div>
