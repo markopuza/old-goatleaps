@@ -36,6 +36,18 @@ permalink: /media/
 </div>
 
 
+
+<div align="center">
+  <h1> Barnsley's fern </h1>
+  <a class="post-link" href="/media/maths/programming/tools/The-Chaos-Game.html">
+  <img src="/assets/image/bernsleys_fern_gallery/borovica.png" style="width:22%;">
+  <img src="/assets/image/bernsleys_fern_gallery/leafy.png" style="width:22%;">
+  <img src="/assets/image/bernsleys_fern_gallery/3.png" style="width:22%;">
+  <img src="/assets/image/bernsleys_fern_gallery/1.png" style="width:22%;">
+  </a>
+</div>
+
+
 <div align="center">
   <h1> The Chaos game </h1>
   <a class="post-link" href="/media/maths/programming/tools/The-Chaos-Game.html">
