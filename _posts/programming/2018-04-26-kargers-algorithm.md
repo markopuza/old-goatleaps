@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Karger's mincut algorithm in Python"
-date:   2018-04-24 01:38:59 +0000
+date:   2018-04-26 01:38:59 +0000
 category-string: "Programming"
 categories: programming
 icon: kargers
