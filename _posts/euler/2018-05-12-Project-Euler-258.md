@@ -1,10 +1,10 @@
 ---
 layout: post
 title:  "Project Euler 258"
-date:   2018-05-12\ 01:00:59 +0000
+date:   2018-05-07\ 01:00:59 +0000
 category-string: "Maths"
 categories: euler maths
-icon: euler626
+icon: euler258
 ---
 
 # WARNING: The text below provides a guidance for a Project Euler problem.
