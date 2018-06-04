@@ -35,6 +35,13 @@ permalink: /media/
   </div>
 </div>
 
+<div align="center">
+  <h1> Epicycles drawing </h1>
+  <a class="post-link" href="/media/maths/programming/tools/Epicycles-drawing.html">
+  <img src="/assets/gif/epicycles.gif" style="width:22%;">
+  <img src="/assets/gif/epicycles_sporadic.gif" style="width:22%;">
+  </a>
+</div>
 
 
 <div align="center">
