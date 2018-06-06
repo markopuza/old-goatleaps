@@ -13,7 +13,7 @@ The most beautiful and sunny days around here are sometimes ruined by haar. When
 
 Video download: >>[.mp4](/assets/haar_crags/haar.mp4)<<   >>[.gif](/assets/haar_crags/haar_gif.gif)<<   >>[.mov](/assets/haar_crags/haar_HQ.mov)<< (full quality)
 
-<video width="95%" controls loop>
+<video width="95%" controls autoplay loop>
   <source src="/assets/haar_crags/haar.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
