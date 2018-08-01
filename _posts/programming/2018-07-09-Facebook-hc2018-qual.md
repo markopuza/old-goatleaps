@@ -7,7 +7,7 @@ categories: programming
 icon: fb_hc2018_qual
 ---
 
-The delayed Facebook Hacker Cup 2018 has finished recently with a set of problems that made one scratch their head. Below you can find brief solutions in Python that were fast enough to run on the given input files. The official problem statements/editorials can be found >>[here](https://www.facebook.com/notes/2249775598371662)<<.
+The qualification round of the delayed Facebook Hacker Cup 2018 has finished recently with a set of problems that made one scratch their head. Below you can find brief solutions in Python that were fast enough to run on the given input files. The official problem statements/editorials can be found >>[here](https://www.facebook.com/notes/2249775598371662)<<.
 
 # 1. Tourist
 {% highlight python %}
