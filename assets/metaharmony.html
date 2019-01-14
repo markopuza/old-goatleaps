@@ -2,24 +2,48 @@
 	<head>
 		<title> Metaharmony </title>
 		<style>
-			body { margin: 0; }
+      body {
+      				background-color: #000;
+      				margin: 0;
+      				overflow: hidden;
+      			}
 			canvas { width: 100%; height: 100% }
+
+      .label{
+				color: #000000;
+				font-family: sans-serif;
+				font-size: 30px;
+				margin-left: 20px;
+				padding: 20px;
+			}
 		</style>
 	</head>
 	<body>
 		<script src="script/three.min.js"></script>
     <script src="script/orbit_controls.js"></script>
+    <script src="script/threejslabelrenderer.js"></script>
 		<script>
 
 
 			var scene = new THREE.Scene();
+      scene.background = new THREE.Color( 0xffffff );
+
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-      controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+            labelRenderer = new THREE.CSS2DRenderer();
+              labelRenderer.setSize( window.innerWidth, window.innerHeight );
+              labelRenderer.domElement.style.position = 'absolute';
+              labelRenderer.domElement.style.top = 0;
+              document.body.appendChild( labelRenderer.domElement );
+
+      var controls = new THREE.OrbitControls( camera );
+
+
 
 			// var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 			// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
@@ -35,95 +59,180 @@
       // var cube = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
 			// scene.add( cube );
 
-      // var geometry = new THREE.CylinderGeometry( 0.1, 0.1, 3, 8 );
+      function addEdge(from, to, color) { // from, to are Vector3 objects
+        var vector = to.sub(from);
+        var group = new THREE.Group();
+
+        var geometry = new THREE.CylinderGeometry(0.06, 0.06, vector.length(), 12, 12);
+        var meshMaterial = new THREE.MeshBasicMaterial( {color: color} );
+        var lineMaterial = new THREE.LineBasicMaterial( { color: 0x222222, transparent: true, opacity: 0.1 } );
+
+        var mesh = new THREE.Mesh(geometry, meshMaterial);
+        var frame = new THREE.LineSegments( geometry, lineMaterial );
+
+        var axis = new THREE.Vector3(0, 1, 0);
+        mesh.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
+        // mesh.position.copy(vector.add(from).clone().multiplyScalar(0.5));
+        frame.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
+        // frame.position.copy(vector.add(from).clone().multiplyScalar(0.5));
+
+        var edgeCenter = from.add(vector.multiplyScalar(0.5));
+        mesh.position.set(edgeCenter.x, edgeCenter.y, edgeCenter.z);
+        frame.position.set(edgeCenter.x, edgeCenter.y, edgeCenter.z);
+
+        group.add(mesh);
+        group.add(frame);
+
+        scene.add( group );
+      }
+
+
+      function addNote(pos, name, color) {
+        var geometry = new THREE.DodecahedronGeometry( 0.06 );
+        var meshMaterial = new THREE.MeshBasicMaterial( {color: color} );
+        var sphere = new THREE.Mesh( geometry, meshMaterial );
+        sphere.position.set(pos.x, pos.y, pos.z);
+
+        var noteDiv = document.createElement( 'div' );
+				noteDiv.className = 'label';
+				noteDiv.textContent = name;
+				noteDiv.style.marginTop = '-25px';
+        noteDiv.style.zIndex = 2;
+
+				var noteLabel = new THREE.CSS2DObject( noteDiv );
+				// noteLabel.position.set( pos.x, pos.y, pos.z );
+				sphere.add( noteLabel );
+
+        scene.add( sphere );
+      }
+
+
+			// TODO: function for arbitrary rotation
+			// TODO: group all of the edges and notes into one object, rotate the object
+
+      var blue = 0x0066ff;
+      var purple = 0x9933ff;
+      var red = 0xcc0000;
+      var orange = 0xff9900;
+      var yellow = 0xffff00;
+      var green = 0x00cc00;
+
+
+			var edges = [
+				[1, 1, -1, 1, -1, -1, blue],
+				[1,1,-1,-1,1,-1,blue],
+				[-1,1,-1,-1,-1,-1,blue],
+				[-1,-1,-1,1,-1,-1,blue],
+				[1,1,1,1,-1,1,yellow],
+				[1,1,1,-1,1,1,orange],
+				[-1,1,1,-1,-1,1,red],
+				[-1,-1,1,1,-1,1,orange],
+				[1,1,-1,1,1,1,green],
+				[1,-1,-1,1,-1,1,green],
+				[-1,-1,-1,-1,-1,1,purple],
+				[-1,1,-1,-1,1,1,purple]
+			];
+
+
+			var notes = [
+				[1,1,1,'A',yellow],
+				[1,1,-1,'D',blue],
+				[1,-1,1,'C',yellow],
+				[-1,1,1,'E',red],
+				[-1,-1,1,'G',red],
+				[-1,1,-1,'B',blue],
+				[1,-1,-1,'F',blue],
+				[-1,-1,-1,'D',blue]
+			]
+
+
+			for (i = 0; i < edges.length; i++) {
+				var e = edges[i];
+				// console.log(e);
+				addEdge(new THREE.Vector3(e[0], e[1], e[2]), new THREE.Vector3(e[3], e[4], e[5]), e[6]);
+			}
+			for (i = 0; i < notes.length; i++) {
+				var n = notes[i];
+				addNote(new THREE.Vector3(n[0], n[1], n[2]), n[3], n[4]);
+			}
+
+
+      // addEdge(new THREE.Vector3(1, 1, -1), new THREE.Vector3(1, -1, -1), blue);
+      // addEdge(new THREE.Vector3(1, 1, -1), new THREE.Vector3(-1, 1, -1), blue);
+      // addEdge(new THREE.Vector3(-1, 1, -1), new THREE.Vector3(-1, -1, -1), blue);
+      // addEdge(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(1, -1, -1), blue);
+			//
+      // addEdge(new THREE.Vector3(1, 1, 1), new THREE.Vector3(1, -1, 1), yellow);
+      // addEdge(new THREE.Vector3(1, 1, 1), new THREE.Vector3(-1, 1, 1), orange);
+      // addEdge(new THREE.Vector3(-1, 1, 1), new THREE.Vector3(-1, -1, 1), red);
+      // addEdge(new THREE.Vector3(-1, -1, 1), new THREE.Vector3(1, -1, 1), orange);
+			//
+      // addEdge(new THREE.Vector3(1, 1, -1), new THREE.Vector3(1, 1, 1), green);
+      // addEdge(new THREE.Vector3(1, -1, -1), new THREE.Vector3(1, -1, 1), green);
+      // addEdge(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(-1, -1, 1), purple);
+      // addEdge(new THREE.Vector3(-1, 1, -1), new THREE.Vector3(-1, 1, 1), purple);
+			//
+      // addNote(new THREE.Vector3(1, 1, 1), 'A');
+			// addNote(new THREE.Vector3(1, 1, -1), 'D');
+			// addNote(new THREE.Vector3(1, -1, 1), 'C');
+			// addNote(new THREE.Vector3(-1, 1, 1), 'E');
+			// addNote(new THREE.Vector3(-1, -1, 1), 'G');
+			// addNote(new THREE.Vector3(-1, 1, -1), 'B');
+			// addNote(new THREE.Vector3(1, -1, -1), 'F');
+			// addNote(new THREE.Vector3(-1, -1, -1), 'D');
+
+      scene.rotation.y = 0.6;
+
+      // var material = new THREE.LineBasicMaterial({
+      // 	color: 0x0000ff
+      // });
+      //
+      // var geometry = new THREE.Geometry();
+      // geometry.vertices.push(
+      // 	new THREE.Vector3( 1, 1, 1 ),
+      // 	new THREE.Vector3( 2, 2, 2 ),
+      // );
+      //
+      // var line = new THREE.Line( geometry, material );
+      // scene.add( line );
+
+      // addEdge(new THREE.Vector3(1, 1, 0), new THREE.Vector3(1, 2, 0), blue);
+
+      // var geometry = new THREE.CylinderGeometry( 0.1, 0.1, 6, 8 );
       // var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
       // var cylinder = new THREE.Mesh( geometry, material );
       // cylinder.rotation.x += 0.5;
-
+      //
       // scene.add( cylinder );
 
-      var x = 1.41;
+			camera.position.z = 4;
 
-      var material1 = new THREE.LineBasicMaterial( { color: 0x3333ff, linewidth: 15 } );
-      var geometry1 = new THREE.Geometry();
-        geometry1.vertices.push(new THREE.Vector3( -2, 0, -x) );
-        geometry1.vertices.push(new THREE.Vector3( 0, 2, -x) );
-        geometry1.vertices.push(new THREE.Vector3( 2, 0, -x) );
-        geometry1.vertices.push(new THREE.Vector3( 0, -2, -x) );
-        geometry1.vertices.push(new THREE.Vector3( -2, 0, -x) );
-      var line1 = new THREE.Line( geometry1, material1 );
-      scene.add( line1 );
-
-      var material2 = new THREE.LineBasicMaterial( { color: 0x6600cc, linewidth: 15 } );
-      var geometry2 = new THREE.Geometry();
-        geometry2.vertices.push(new THREE.Vector3( -2, 0, -x) );
-        geometry2.vertices.push(new THREE.Vector3( -2, 0, x) );
-      var line2 = new THREE.Line( geometry2, material2 );
-      scene.add( line2 );
-
-      var material3 = new THREE.LineBasicMaterial( { color: 0x6600cc, linewidth: 15 } );
-      var geometry3 = new THREE.Geometry();
-        geometry3.vertices.push(new THREE.Vector3( 0, 2, -x) );
-        geometry3.vertices.push(new THREE.Vector3( 0, 2, x) );
-      var line3 = new THREE.Line( geometry3, material3 );
-      scene.add( line3 );
-
-      var material4 = new THREE.LineBasicMaterial( { color: 0xff0066, linewidth: 15 } );
-      var geometry4 = new THREE.Geometry();
-        geometry4.vertices.push(new THREE.Vector3( -2, 0, x) );
-        geometry4.vertices.push(new THREE.Vector3( 0, 2, x) );
-      var line4 = new THREE.Line( geometry4, material4 );
-      scene.add( line4 );
-
-      var material5 = new THREE.LineBasicMaterial( { color: 0x009933, linewidth: 15 } );
-      var geometry5 = new THREE.Geometry();
-        geometry5.vertices.push(new THREE.Vector3( 2, 0, -x) );
-        geometry5.vertices.push(new THREE.Vector3( 2, 0, x) );
-      var line5 = new THREE.Line( geometry5, material5 );
-      scene.add( line5 );
-
-      var material6 = new THREE.LineBasicMaterial( { color: 0x009933, linewidth: 15 } );
-      var geometry6 = new THREE.Geometry();
-        geometry6.vertices.push(new THREE.Vector3( 0, -2, -x) );
-        geometry6.vertices.push(new THREE.Vector3( 0, -2, x) );
-      var line6 = new THREE.Line( geometry6, material6 );
-      scene.add( line6 );
-
-      var material7 = new THREE.LineBasicMaterial( { color: 0xffff00, linewidth: 15 } );
-      var geometry7 = new THREE.Geometry();
-        geometry7.vertices.push(new THREE.Vector3( 2, 0, x) );
-        geometry7.vertices.push(new THREE.Vector3( 0, -2, x) );
-      var line7 = new THREE.Line( geometry7, material7 );
-      scene.add( line7 );
-
-      var material8 = new THREE.LineBasicMaterial( { color: 0xff9900, linewidth: 15 } );
-      var geometry8 = new THREE.Geometry();
-        geometry8.vertices.push(new THREE.Vector3(  -2, 0, x) );
-        geometry8.vertices.push(new THREE.Vector3( 0, -2, x) );
-      var line8 = new THREE.Line( geometry8, material8 );
-      scene.add( line8 );
-
-      var material9 = new THREE.LineBasicMaterial( { color: 0xff9900, linewidth: 15 } );
-      var geometry9 = new THREE.Geometry();
-        geometry9.vertices.push(new THREE.Vector3( 0, 2, x) );
-        geometry9.vertices.push(new THREE.Vector3( 2, 0, x) );
-      var line9 = new THREE.Line( geometry9, material9 );
-      scene.add( line9 );
-
-
-			camera.position.z = 5;
 
       renderer.render( scene, camera );
+      labelRenderer.render( scene, camera );
+
+			// function rotateY(dir) {
+			// 	for (var i = 0; i < 100; i++) {
+			// 		scene.rotation.y += dir * Math.PI / 200;
+			// 	}
+			// }
+			// rotateY(+1);
+
+			var experiment = 0;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
 
-        controls.update();
+        // controls.update();
 
 				// cube.rotation.x += 0.01;
-				// cube.rotation.y += 0.01;
+				if (experiment < Math.PI) {
+					scene.rotation.z += Math.PI/200;
+					experiment += Math.PI/200;
+				}
 
 				renderer.render( scene, camera );
+        labelRenderer.render( scene, camera );
 			};
 
 			animate();
