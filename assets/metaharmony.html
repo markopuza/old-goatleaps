@@ -7,14 +7,20 @@
       				margin: 0;
       				overflow: hidden;
       			}
+
 			canvas { width: 100%; height: 100% }
 
       .label{
 				color: #000000;
 				font-family: sans-serif;
-				font-size: 30px;
-				margin-left: 20px;
-				padding: 20px;
+				font-size: 1.7em;
+				margin-left: 0.7em;
+				padding: 0.7em;
+			}
+
+			.label{
+				color: #000000;
+				font-family: sans-serif;
 			}
 		</style>
 	</head>
@@ -24,6 +30,95 @@
     <script src="script/threejslabelrenderer.js"></script>
 		<script>
 
+			var enabled_controls = true;
+
+	    var blue = 0x0066ff;
+	    var purple = 0x9933ff;
+	    var red = 0xcc0000;
+	    var orange = 0xff9900;
+	    var yellow = 0xffff00;
+	    var green = 0x00cc00;
+
+			var notes = [
+				[1,1,1,  'A',yellow],
+				[1,1,-1, 'D 0',blue],
+				[1,-1,1, 'C',yellow],
+				[-1,1,1, 'E',red],
+				[-1,-1,1,'G',red],
+				[-1,1,-1,'B',blue],
+				[1,-1,-1,'F',blue],
+				[-1,-1,-1,'D 1',blue]
+			]
+
+			var edges = [
+				['A', 'C', yellow],
+				['G', 'C', orange],
+				['E', 'A', orange],
+				['E', 'G', red],
+				['A', 'D 0', green],
+				['F', 'C', green],
+				['D 1', 'G', purple],
+				['B', 'E', purple],
+				['B', 'D 0', blue],
+				['B', 'D 1', blue],
+				['F', 'D 0', blue],
+				['F', 'D 1', blue]
+			];
+
+			var axes = [
+				[1,0,0,'x'],
+				[0,1,0,'y'],
+				[0,0,1,'z']
+			]
+
+			// represents the WHOLE THING
+			var thing = new THREE.Group();
+
+
+			function addNote(pos, name, color) {
+				var geometry = new THREE.DodecahedronGeometry( 0.06 );
+				var meshMaterial = new THREE.MeshBasicMaterial( {color: color} );
+				var sphere = new THREE.Mesh( geometry, meshMaterial );
+				sphere.position.set(pos.x, pos.y, pos.z);
+
+				var noteDiv = document.createElement( 'div' );
+				noteDiv.className = 'label';
+				noteDiv.textContent = name.split(' ')[0];
+				noteDiv.style.marginTop = '-25px';
+				noteDiv.style.zIndex = 2;
+
+				var noteLabel = new THREE.CSS2DObject( noteDiv );
+				// noteLabel.position.set( pos.x, pos.y, pos.z );
+				sphere.add( noteLabel );
+				thing.add( sphere );
+			}
+
+			function addEdge(from, to, color) { // from, to are Vectors
+				var vector = to.sub(from);
+				var group = new THREE.Group();
+
+				var geometry = new THREE.CylinderGeometry(0.06, 0.06, vector.length(), 12, 12);
+				var meshMaterial = new THREE.MeshBasicMaterial( {color: color} );
+				var lineMaterial = new THREE.LineBasicMaterial( { color: 0x222222, transparent: true, opacity: 0.1 } );
+
+				var mesh = new THREE.Mesh(geometry, meshMaterial);
+				var frame = new THREE.LineSegments( geometry, lineMaterial );
+
+				var axis = new THREE.Vector3(0, 1, 0);
+				mesh.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
+				// mesh.position.copy(vector.add(from).clone().multiplyScalar(0.5));
+				frame.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
+				// frame.position.copy(vector.add(from).clone().multiplyScalar(0.5));
+
+				var edgeCenter = from.add(vector.multiplyScalar(0.5));
+				mesh.position.set(edgeCenter.x, edgeCenter.y, edgeCenter.z);
+				frame.position.set(edgeCenter.x, edgeCenter.y, edgeCenter.z);
+
+				group.add(mesh);
+				group.add(frame);
+
+				thing.add( group );
+			}
 
 			var scene = new THREE.Scene();
       scene.background = new THREE.Color( 0xffffff );
@@ -34,208 +129,106 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
+      var labelRenderer = new THREE.CSS2DRenderer();
+        labelRenderer.setSize( window.innerWidth, window.innerHeight );
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = 0;
+        document.body.appendChild( labelRenderer.domElement );
 
-            labelRenderer = new THREE.CSS2DRenderer();
-              labelRenderer.setSize( window.innerWidth, window.innerHeight );
-              labelRenderer.domElement.style.position = 'absolute';
-              labelRenderer.domElement.style.top = 0;
-              document.body.appendChild( labelRenderer.domElement );
-
-      var controls = new THREE.OrbitControls( camera );
-
-
-
-			// var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			// var cube = new THREE.Mesh( geometry, material );
-
-      // cube = new THREE.Mesh(
-      //     new THREE.BoxGeometry( 1, 1, 1 ),
-      //     new THREE.MeshBasicMaterial( { color : 0xff0000, wireframe: true }
-      // ) );
-
-      // var geometry = new THREE.BoxBufferGeometry( 3, 3, 3 );
-      // var edges = new THREE.EdgesGeometry( geometry );
-      // var cube = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
-			// scene.add( cube );
-
-      function addEdge(from, to, color) { // from, to are Vector3 objects
-        var vector = to.sub(from);
-        var group = new THREE.Group();
-
-        var geometry = new THREE.CylinderGeometry(0.06, 0.06, vector.length(), 12, 12);
-        var meshMaterial = new THREE.MeshBasicMaterial( {color: color} );
-        var lineMaterial = new THREE.LineBasicMaterial( { color: 0x222222, transparent: true, opacity: 0.1 } );
-
-        var mesh = new THREE.Mesh(geometry, meshMaterial);
-        var frame = new THREE.LineSegments( geometry, lineMaterial );
-
-        var axis = new THREE.Vector3(0, 1, 0);
-        mesh.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
-        // mesh.position.copy(vector.add(from).clone().multiplyScalar(0.5));
-        frame.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
-        // frame.position.copy(vector.add(from).clone().multiplyScalar(0.5));
-
-        var edgeCenter = from.add(vector.multiplyScalar(0.5));
-        mesh.position.set(edgeCenter.x, edgeCenter.y, edgeCenter.z);
-        frame.position.set(edgeCenter.x, edgeCenter.y, edgeCenter.z);
-
-        group.add(mesh);
-        group.add(frame);
-
-        scene.add( group );
-      }
-
-
-      function addNote(pos, name, color) {
-        var geometry = new THREE.DodecahedronGeometry( 0.06 );
-        var meshMaterial = new THREE.MeshBasicMaterial( {color: color} );
-        var sphere = new THREE.Mesh( geometry, meshMaterial );
-        sphere.position.set(pos.x, pos.y, pos.z);
-
-        var noteDiv = document.createElement( 'div' );
-				noteDiv.className = 'label';
-				noteDiv.textContent = name;
-				noteDiv.style.marginTop = '-25px';
-        noteDiv.style.zIndex = 2;
-
-				var noteLabel = new THREE.CSS2DObject( noteDiv );
-				// noteLabel.position.set( pos.x, pos.y, pos.z );
-				sphere.add( noteLabel );
-
-        scene.add( sphere );
-      }
-
-
-			// TODO: function for arbitrary rotation
-			// TODO: group all of the edges and notes into one object, rotate the object
-
-      var blue = 0x0066ff;
-      var purple = 0x9933ff;
-      var red = 0xcc0000;
-      var orange = 0xff9900;
-      var yellow = 0xffff00;
-      var green = 0x00cc00;
-
-
-			var edges = [
-				[1, 1, -1, 1, -1, -1, blue],
-				[1,1,-1,-1,1,-1,blue],
-				[-1,1,-1,-1,-1,-1,blue],
-				[-1,-1,-1,1,-1,-1,blue],
-				[1,1,1,1,-1,1,yellow],
-				[1,1,1,-1,1,1,orange],
-				[-1,1,1,-1,-1,1,red],
-				[-1,-1,1,1,-1,1,orange],
-				[1,1,-1,1,1,1,green],
-				[1,-1,-1,1,-1,1,green],
-				[-1,-1,-1,-1,-1,1,purple],
-				[-1,1,-1,-1,1,1,purple]
-			];
-
-
-			var notes = [
-				[1,1,1,'A',yellow],
-				[1,1,-1,'D',blue],
-				[1,-1,1,'C',yellow],
-				[-1,1,1,'E',red],
-				[-1,-1,1,'G',red],
-				[-1,1,-1,'B',blue],
-				[1,-1,-1,'F',blue],
-				[-1,-1,-1,'D',blue]
-			]
-
-
-			for (i = 0; i < edges.length; i++) {
-				var e = edges[i];
-				// console.log(e);
-				addEdge(new THREE.Vector3(e[0], e[1], e[2]), new THREE.Vector3(e[3], e[4], e[5]), e[6]);
+			if (enabled_controls) {
+				var controls = new THREE.OrbitControls( camera );
 			}
+
+
+			var note_dict = {};
+
 			for (i = 0; i < notes.length; i++) {
 				var n = notes[i];
 				addNote(new THREE.Vector3(n[0], n[1], n[2]), n[3], n[4]);
+				note_dict[n[3]] = [n[0], n[1], n[2], n[4]];
 			}
 
+			for (i = 0; i < edges.length; i++) {
+				var e = edges[i];
+				var from = note_dict[e[0]]; var to = note_dict[e[1]];
+				addEdge(new THREE.Vector3(from[0], from[1], from[2]), new THREE.Vector3(to[0], to[1], to[2]), e[2]);
+			}
 
-      // addEdge(new THREE.Vector3(1, 1, -1), new THREE.Vector3(1, -1, -1), blue);
-      // addEdge(new THREE.Vector3(1, 1, -1), new THREE.Vector3(-1, 1, -1), blue);
-      // addEdge(new THREE.Vector3(-1, 1, -1), new THREE.Vector3(-1, -1, -1), blue);
-      // addEdge(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(1, -1, -1), blue);
-			//
-      // addEdge(new THREE.Vector3(1, 1, 1), new THREE.Vector3(1, -1, 1), yellow);
-      // addEdge(new THREE.Vector3(1, 1, 1), new THREE.Vector3(-1, 1, 1), orange);
-      // addEdge(new THREE.Vector3(-1, 1, 1), new THREE.Vector3(-1, -1, 1), red);
-      // addEdge(new THREE.Vector3(-1, -1, 1), new THREE.Vector3(1, -1, 1), orange);
-			//
-      // addEdge(new THREE.Vector3(1, 1, -1), new THREE.Vector3(1, 1, 1), green);
-      // addEdge(new THREE.Vector3(1, -1, -1), new THREE.Vector3(1, -1, 1), green);
-      // addEdge(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(-1, -1, 1), purple);
-      // addEdge(new THREE.Vector3(-1, 1, -1), new THREE.Vector3(-1, 1, 1), purple);
-			//
-      // addNote(new THREE.Vector3(1, 1, 1), 'A');
-			// addNote(new THREE.Vector3(1, 1, -1), 'D');
-			// addNote(new THREE.Vector3(1, -1, 1), 'C');
-			// addNote(new THREE.Vector3(-1, 1, 1), 'E');
-			// addNote(new THREE.Vector3(-1, -1, 1), 'G');
-			// addNote(new THREE.Vector3(-1, 1, -1), 'B');
-			// addNote(new THREE.Vector3(1, -1, -1), 'F');
-			// addNote(new THREE.Vector3(-1, -1, -1), 'D');
+			/////////////////////////////////////
+			// add axes
+			/////////////////////////////////////
+			var axes_pointers = {};
+			for (i = 0; i < axes.length; i++) {
+				var a = axes[i];
+				var ax_material = new THREE.LineBasicMaterial({color: 0x000000});
+				var geometry = new THREE.Geometry();
+				geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(a[0],a[1],a[2]));
+				var line = new THREE.Line( geometry, ax_material );
 
-      scene.rotation.y = 0.6;
+				var geometry = new THREE.SphereGeometry( 0.01 );
+				var meshMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
+				var sphere = new THREE.Mesh( geometry, meshMaterial );
+				sphere.position.set(a[0],a[1],a[2]);
 
-      // var material = new THREE.LineBasicMaterial({
-      // 	color: 0x0000ff
-      // });
-      //
-      // var geometry = new THREE.Geometry();
-      // geometry.vertices.push(
-      // 	new THREE.Vector3( 1, 1, 1 ),
-      // 	new THREE.Vector3( 2, 2, 2 ),
-      // );
-      //
-      // var line = new THREE.Line( geometry, material );
-      // scene.add( line );
+				var noteDiv = document.createElement( 'div' );
+				noteDiv.className = 'axis';
+				noteDiv.textContent = a[3];
+				noteDiv.style.marginTop = '-10px';
+				noteDiv.style.zIndex = 2;
+				var noteLabel = new THREE.CSS2DObject( noteDiv );
+				sphere.add( noteLabel );
+				thing.add( line );
+				axes_pointers[a[3]] = sphere;
+				thing.add( sphere );
+			}
+			/////////////////////////////////////
+			/////////////////////////////////////
 
-      // addEdge(new THREE.Vector3(1, 1, 0), new THREE.Vector3(1, 2, 0), blue);
+			scene.updateMatrixWorld(true);
+			scene.add( thing );
 
-      // var geometry = new THREE.CylinderGeometry( 0.1, 0.1, 6, 8 );
-      // var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-      // var cylinder = new THREE.Mesh( geometry, material );
-      // cylinder.rotation.x += 0.5;
-      //
-      // scene.add( cylinder );
+      thing.rotation.y = 0.5;
+			thing.rotation.x = 0.1;
 
 			camera.position.z = 4;
-
 
       renderer.render( scene, camera );
       labelRenderer.render( scene, camera );
 
-			// function rotateY(dir) {
-			// 	for (var i = 0; i < 100; i++) {
-			// 		scene.rotation.y += dir * Math.PI / 200;
-			// 	}
-			// }
-			// rotateY(+1);
 
-			var experiment = 0;
+			//////////////////////////////////
+			//////////////////////////////////
+
+			var dx = Math.PI/200;
+			var dy = 0;
+			var dz = 0;
+			var rotation_rep = 100;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
 
-        // controls.update();
-
-				// cube.rotation.x += 0.01;
-				if (experiment < Math.PI) {
-					scene.rotation.z += Math.PI/200;
-					experiment += Math.PI/200;
+				///// ROTATION
+				if (rotation_rep > 0) {
+					rotation_rep -= 1;
+					thing.rotateX(dx);
+					thing.rotateY(dy);
+					thing.rotateZ(dz);
 				}
+				else {
+					var t = dx;
+					dx = dy;
+					dy = t;
+					rotation_rep = 100;
+				}
+				//////////////////
 
 				renderer.render( scene, camera );
         labelRenderer.render( scene, camera );
 			};
 
+
 			animate();
+
 		</script>
 	</body>
 </html>
