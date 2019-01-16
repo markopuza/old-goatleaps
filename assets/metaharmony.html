@@ -26,6 +26,7 @@
 	</head>
 	<body>
 		<script src="script/three.min.js"></script>
+		<script src="script/dat.gui.min.js"></script>
     <script src="script/orbit_controls.js"></script>
     <script src="script/threejslabelrenderer.js"></script>
 		<script>
@@ -64,6 +65,60 @@
 				['F', 'D 0', blue],
 				['F', 'D 1', blue]
 			];
+
+			// var notes = [
+			// 	[0,1,2, 'E', red],
+			// 	[Math.sqrt(3),1,1, 'A', yellow],
+			// 	[Math.sqrt(3),1,-1, 'C', yellow],
+			// 	[0,1,-2, 'F',blue],
+			// 	[-Math.sqrt(3),1,-1,'Ab',blue],
+			// 	[-Math.sqrt(3),1,1,'Db',red],
+			//
+			// 	[0,-1,2, 'G', red],
+			// 	[Math.sqrt(3),-1,1, 'C 1', yellow],
+			// 	[Math.sqrt(3),-1,-1, 'Eb', yellow],
+			// 	[0,-1,-2, 'Ab 1',blue],
+			// 	[-Math.sqrt(3),-1,-1,'B',blue],
+			// 	[-Math.sqrt(3),-1,1,'E 1',red]
+			// ]
+
+			// var edges = [
+			// 	['E', 'A', orange],
+			// 	['G', 'C 1', orange],
+			// 	['A', 'C', yellow],
+			// 	['A', 'C 1', yellow],
+			// 	['C', 'Eb', yellow],
+			// 	['C 1', 'Eb', yellow],
+			// 	['C', 'F', green],
+			// 	['Eb', 'Ab 1', green],
+			// 	['F', 'Ab', blue],
+			// 	['F', 'Ab 1', blue],
+			// 	['Ab 1', 'B', blue],
+			// 	['Ab', 'B', blue],
+			// 	['Ab', 'Db', purple],
+			// 	['B', 'E 1', purple],
+			// 	['Db', 'E', red],
+			// 	['Db', 'E 1', red],
+			// 	['E', 'G', red],
+			// 	['E 1', 'G', red]
+			// ];
+
+			// var edges = [
+			// 	['A', 'Db', orange],
+			// 	['G', 'A', orange],
+			// 	['G', 'Eb', orange],
+			// 	['A', 'Eb', yellow],
+			// 	['A', 'F', green],
+			// 	['Eb', 'F', green],
+			// 	['Eb', 'B', green],
+			// 	['F', 'B', blue],
+			// 	['F', 'Db', purple],
+			// 	['Db', 'B', purple],
+			// 	['B', 'G', purple],
+			// 	['Db', 'G', red]
+			// ];
+
+
 
 			var axes = [
 				[1,0,0,'x'],
@@ -121,7 +176,7 @@
 			}
 
 			var scene = new THREE.Scene();
-      scene.background = new THREE.Color( 0xffffff );
+      scene.background = new THREE.Color( 0xeeeeee );
 
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
@@ -187,7 +242,7 @@
 			scene.updateMatrixWorld(true);
 			scene.add( thing );
 
-      thing.rotation.y = 0.5;
+      thing.rotation.y = 0.4;
 			thing.rotation.x = 0.1;
 
 			camera.position.z = 4;
@@ -196,13 +251,14 @@
       labelRenderer.render( scene, camera );
 
 
+			/// rotations
+
 			//////////////////////////////////
 			//////////////////////////////////
 
-			var dx = Math.PI/200;
-			var dy = 0;
-			var dz = 0;
-			var rotation_rep = 100;
+			var rotationVector = new THREE.Vector3(0, 0, 1);
+			var rotationStep = Math.PI/200;
+			var rotation_rep = 0;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
@@ -210,25 +266,83 @@
 				///// ROTATION
 				if (rotation_rep > 0) {
 					rotation_rep -= 1;
-					thing.rotateX(dx);
-					thing.rotateY(dy);
-					thing.rotateZ(dz);
+					thing.rotateOnAxis(rotationVector.normalize(), rotationStep);
+
+					// thing.rotateX(dx);
+					// thing.rotateY(dy);
+					// thing.rotateZ(dz);
 				}
-				else {
-					var t = dx;
-					dx = dy;
-					dy = t;
-					rotation_rep = 100;
-				}
+				// else {
+				// 	var t = dx;
+				// 	dx = dy;
+				// 	dy = t;
+				// 	rotation_rep = 100;
+				// }
 				//////////////////
 
 				renderer.render( scene, camera );
         labelRenderer.render( scene, camera );
 			};
 
-
 			animate();
 
+			/////////////////////////////////////
+			// gui
+			// Functional rotations: 90; y
+			// Relative rotations: 180; z
+			////////////////////////
+			var gui = new dat.GUI();
+			var f0 = gui.addFolder('Current note');
+			var f1 = gui.addFolder('Functional rotation');
+			var f2 = gui.addFolder('Relative rotation');
+
+			var CurrentNoteControls = function() {
+					this.note = 'C';
+				};
+			var cnc = new CurrentNoteControls();
+			f0.add(cnc, 'note').name('Current note');
+
+			var FunctionalControls = function() {
+					this.clockwise = function() {
+						if (rotation_rep == 0) {
+						rotationVector = new THREE.Vector3(0, 1, 0); // y
+						rotationStep = -Math.PI/200;
+						rotation_rep = 100; }
+					 };
+				  this.anticlockwise = function() {
+						if (rotation_rep == 0) {
+						rotationVector = new THREE.Vector3(0, 1, 0); // y
+						rotationStep = Math.PI/200;
+						rotation_rep = 100; }
+					 };
+				};
+			var fc = new FunctionalControls();
+			f1.add(fc, 'clockwise').name('Rotate CW');
+			f1.add(fc, 'anticlockwise').name('Rotate CCW');
+
+			var RelativeControls = function() {
+					this.clockwise = function() {
+						if (rotation_rep == 0) {
+						rotationVector = new THREE.Vector3(0, 0, 1); // z
+						rotationStep = -Math.PI/200;
+						rotation_rep = 200; }
+					 };
+				  this.anticlockwise = function() {
+						if (rotation_rep == 0) {
+						rotationVector = new THREE.Vector3(0, 0, 1); // z
+						rotationStep = Math.PI/200;
+						rotation_rep = 200; }
+					 };
+				};
+			var rc = new RelativeControls();
+			f2.add(rc, 'clockwise').name('Rotate CW');
+			f2.add(rc, 'anticlockwise').name('Rotate CCW');
+
+			f0.open();
+			f1.open();
+			f2.open();
+
+		
 		</script>
 	</body>
 </html>
