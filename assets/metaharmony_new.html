@@ -158,6 +158,18 @@
         scene.add( group );
 			}
 
+			// v - focal point
+			function projection5to3(c, fix, proj_coor, focal, h) {
+					result = [];
+					for (var i = 0; i < 5; i++) {
+						if (i != fix && i != proj_coor) {
+							var lambda = (h - focal[proj_coor]) / (c[proj_coor] - focal[proj_coor]);
+							result.push(lambda * (c[i] - focal[i]) + focal[i]);
+						}
+					}
+				 return result;
+			}
+
 
       /**********************************************************
         METAPRISM
@@ -730,10 +742,11 @@
         The main loop - continuous animation
       ************************/
       METAPRISM.initialize();
-			METAPRISM.setViewingSet(METAPRISM.subsets.hypercubes.orange1);
-			METAPRISM.projection = function(c) { return [4*c[0]/(4-c[3]), 4*c[1]/(4-c[3]), 4*c[4]/(4-c[3])] }
+			METAPRISM.setViewingSet(METAPRISM.subsets.arcadia["1"]);
+			METAPRISM.projection = function(c) { return  projection5to3(c, 4, 3, [0, 0, 0, 4, 0], 1) }
+			// METAPRISM.projection = function(c) { return [4*c[0]/(4-c[4]), 4*c[1]/(4-c[4]), 4*c[2]/(4-c[4])] }
       METAPRISM.render();
-			METAPRISM.make_transition({0:12,1:13,2:14,3:15,24:36,25:37,26:38,27:39,12:0,13:1,14:2,15:3,36:24,37:25,38:26,39:27});
+			//METAPRISM.make_transition({0:12,1:13,2:14,3:15,24:36,25:37,26:38,27:39,12:0,13:1,14:2,15:3,36:24,37:25,38:26,39:27});
 
       var one_more = false;
 
