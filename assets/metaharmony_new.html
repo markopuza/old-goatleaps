@@ -561,7 +561,8 @@
 
         projection: function(c) {
           // 5D to 3D
-          return [c[0], c[1], c[3]]
+					var h = 4;
+          return [4*c[0]/(4-c[4]), 4*c[1]/(4-c[4]), 4*c[3]/(4-c[4])]
         },
 
         viewingSet: [],
@@ -586,6 +587,11 @@
             this.vertices[index] = [coors, note];
             this.note_position[note] = index;
           }
+
+					this.edge_set = {};
+					for (var i = 0; i < this.edges.length; i++) {
+						this.edge_set[this.edges[i][0] + ";" + this.edges[i][1]] = true;
+					}
         },
 
         edge_color: function(color1, color2) {
@@ -614,20 +620,22 @@
             addVertex(new THREE.Vector3(cs[0], cs[1], cs[2]), name, clr);
           }
 
-          for (var e = 0; e < this.edges.length; e++) {
-            edge = this.edges[e];
+					for (var i = 0; i < note_names.length; i++) {
+						for (var j = i + 1; j < note_names.length; j++) {
+							if (((note_names[i] + ";" + note_names[j]) in this.edge_set) || ((note_names[j] + ";" + note_names[i]) in this.edge_set)) {
 
-            if (note_names.includes(edge[0]) && note_names.includes(edge[1])) {
-              var from = this.note_position[edge[0]];
-              var to = this.note_position[edge[1]];
+								var from = this.note_position[note_names[i]];
+	              var to = this.note_position[note_names[j]];
 
-              var cfrom = this.projection(this.vertices[from][0]);
-              var cto = this.projection(this.vertices[to][0]);
+	              var cfrom = this.projection(this.vertices[from][0]);
+	              var cto = this.projection(this.vertices[to][0]);
 
-              addEdge(new THREE.Vector3(cfrom[0], cfrom[1], cfrom[2]), new THREE.Vector3(cto[0], cto[1], cto[2]),
-                this.edge_color(this.initial_notes[edge[0]][5], this.initial_notes[edge[1]][5]));
-            }
-          }
+	              addEdge(new THREE.Vector3(cfrom[0], cfrom[1], cfrom[2]), new THREE.Vector3(cto[0], cto[1], cto[2]),
+	                this.edge_color(this.initial_notes[note_names[i]][5], this.initial_notes[note_names[j]][5]));
+							}
+						}
+					}
+
         },
 
         make_transition: function(permutation) {
@@ -638,6 +646,8 @@
 
         transition_render: function() {
           var t = step/transition_steps;
+
+					////////////
           var note_names = [];
 
           for (var i = 0; i < this.viewingSet.length; i++) {
@@ -647,39 +657,37 @@
               var cs_dest = this.projection(this.vertices[transition_permutation[index]][0]);
               cs = [(1-t)*cs[0] + t*cs_dest[0], (1-t)*cs[1] + t*cs_dest[1], (1-t)*cs[2] + t*cs_dest[2]]
             }
-
             var name = this.vertices[index][1];
             var clr = this.initial_notes[name][5];
             note_names.push(name);
-
             addVertex(new THREE.Vector3(cs[0], cs[1], cs[2]), name, clr);
           }
 
-          for (var e = 0; e < this.edges.length; e++) {
-            edge = this.edges[e];
 
-            if (note_names.includes(edge[0]) && note_names.includes(edge[1])) {
-              var from = this.note_position[edge[0]];
-              var to = this.note_position[edge[1]];
+					for (var i = 0; i < note_names.length; i++) {
+						for (var j = i + 1; j < note_names.length; j++) {
+							if (((note_names[i] + ";" + note_names[j]) in this.edge_set) || ((note_names[j] + ";" + note_names[i]) in this.edge_set)) {
+								var from = this.note_position[note_names[i]];
+								var to = this.note_position[note_names[j]];
 
-              var cfrom = this.projection(this.vertices[from][0]);
-              if (from in transition_permutation) {
-                var cs_dest = this.projection(this.vertices[transition_permutation[from]][0]);
-                cfrom = [(1-t)*cfrom[0] + t*cs_dest[0], (1-t)*cfrom[1] + t*cs_dest[1], (1-t)*cfrom[2] + t*cs_dest[2]]
-              }
-              var cto = this.projection(this.vertices[to][0]);
-              if (to in transition_permutation) {
-                var cs_dest = this.projection(this.vertices[transition_permutation[to]][0]);
-                cto = [(1-t)*cto[0] + t*cs_dest[0], (1-t)*cto[1] + t*cs_dest[1], (1-t)*cto[2] + t*cs_dest[2]]
-              }
-
-              if (cfrom[0] != cto[0] || cfrom[1] != cto[1] || cfrom[2] != cto[2]) {
-                addEdge(new THREE.Vector3(cfrom[0], cfrom[1], cfrom[2]), new THREE.Vector3(cto[0], cto[1], cto[2]),
-                  this.edge_color(this.initial_notes[edge[0]][5], this.initial_notes[edge[1]][5]));
-              }
-            }
-          }
-
+								var cfrom = this.projection(this.vertices[from][0]);
+								if (from in transition_permutation) {
+	                var cs_dest = this.projection(this.vertices[transition_permutation[from]][0]);
+	                cfrom = [(1-t)*cfrom[0] + t*cs_dest[0], (1-t)*cfrom[1] + t*cs_dest[1], (1-t)*cfrom[2] + t*cs_dest[2]]
+	              }
+								var cto = this.projection(this.vertices[to][0]);
+								var cto = this.projection(this.vertices[to][0]);
+								if (to in transition_permutation) {
+									var cs_dest = this.projection(this.vertices[transition_permutation[to]][0]);
+									cto = [(1-t)*cto[0] + t*cs_dest[0], (1-t)*cto[1] + t*cs_dest[1], (1-t)*cto[2] + t*cs_dest[2]]
+								}
+								if (cfrom[0] != cto[0] || cfrom[1] != cto[1] || cfrom[2] != cto[2]) {
+									addEdge(new THREE.Vector3(cfrom[0], cfrom[1], cfrom[2]), new THREE.Vector3(cto[0], cto[1], cto[2]),
+										this.edge_color(this.initial_notes[note_names[i]][5], this.initial_notes[note_names[j]][5]));
+								}
+							}
+						}
+					}
 
           if (step == transition_steps) {
             // update this.vertices, this.note_position
@@ -713,7 +721,7 @@
       /**********************************************************
         TRANSITION variable - to avoid needless rendering
       **********************************************************/
-      var transition_steps = 30;
+      var transition_steps = 22;
       var transition = false;
       var step = 0;
       var transition_permutation = {};
@@ -722,10 +730,9 @@
         The main loop - continuous animation
       ************************/
       METAPRISM.initialize();
-			METAPRISM.setViewingSet(METAPRISM.subsets.hypercubes.orange1_key1);
+			METAPRISM.setViewingSet(METAPRISM.subsets.hypercubes.orange1);
       METAPRISM.render();
-			//[0, 1, 2, 3, 12, 13, 14, 15]
-			METAPRISM.make_transition({0:12, 1:13, 2:14, 3:15, 12:0, 13:1, 14:2, 15:3});
+			METAPRISM.make_transition({0:24,1:25,2:26,3:27,12:36,13:37,14:38,15:39, 24:0,25:1,26:2,27:3,36:12,37:13,38:14,39:15 });
 
       var one_more = false;
 
@@ -735,6 +742,7 @@
           METAPRISM.transition_render();
           step += 1;
         }
+
 				requestAnimationFrame( animate );
 				renderer.render( scene, camera );
 				labelRenderer.render( scene, camera );
