@@ -742,11 +742,17 @@
         The main loop - continuous animation
       ************************/
       METAPRISM.initialize();
-			METAPRISM.setViewingSet(METAPRISM.subsets.hypercubes.orange1);
-			// METAPRISM.projection = function(c) { return  projection5to3(c, 4, 3, [0, 0, 0, 4, 0], 1) }
-			METAPRISM.projection = function(c) { return  projection5to3(c, 2, 4, [0, 0, 0, 0, 4], 0.6)}
+			METAPRISM.setViewingSet(METAPRISM.subsets.arcadia["1"]);
+			// arcade 2 projection
+			METAPRISM.projection = function(c) { return  projection5to3(c, 4, 3, [0, 0, 0, 4, 0], 1) }
+			// orange hypercube 1 projection
+			// METAPRISM.projection = function(c) { return  projection5to3(c, 2, 4, [0, 0, 0, 0, 4], 0.6)}
       METAPRISM.render();
-			METAPRISM.make_transition({0:12,1:13,2:14,3:15,24:36,25:37,26:38,27:39,12:0,13:1,14:2,15:3,36:24,37:25,38:26,39:27});
+			// orange hypercube 1, relative reflection
+			// METAPRISM.make_transition({0:12,1:13,2:14,3:15,24:36,25:37,26:38,27:39,12:0,13:1,14:2,15:3,36:24,37:25,38:26,39:27});
+
+// [0,1,2,3,12,13,14,15]
+			// METAPRISM.make_transition({0:1, 1:2, 2:3, 3:0, 12:13, 13:14, 14:15, 15:12});
 
       var one_more = false;
 
