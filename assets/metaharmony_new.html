@@ -731,8 +731,9 @@
       ************************/
       METAPRISM.initialize();
 			METAPRISM.setViewingSet(METAPRISM.subsets.hypercubes.orange1);
+			METAPRISM.projection = function(c) { return [4*c[0]/(4-c[3]), 4*c[1]/(4-c[3]), 4*c[4]/(4-c[3])] }
       METAPRISM.render();
-			METAPRISM.make_transition({0:24,1:25,2:26,3:27,12:36,13:37,14:38,15:39, 24:0,25:1,26:2,27:3,36:12,37:13,38:14,39:15 });
+			METAPRISM.make_transition({0:12,1:13,2:14,3:15,24:36,25:37,26:38,27:39,12:0,13:1,14:2,15:3,36:24,37:25,38:26,39:27});
 
       var one_more = false;
 
