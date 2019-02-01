@@ -9,6 +9,8 @@ icon: euler650
 
 {% include euler_declaration.md %}
 
+### Divisors of Binomial Product
+
 The problem number 650 is less demanding conceptually and harder in terms of finding an efficient implementation. Denoting $$\sigma$$ the sum of divisors function,
 we define a slightly nauseating chain of quantities:
 
