@@ -18,7 +18,7 @@ var DynamicLine = function () {
 
 		_classCallCheck(this, DynamicLine);
 
-		var material = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
+		var material = new THREE.LineBasicMaterial({ color: color, linecontrols: 2 });
 		this.line = new THREE.Line(new THREE.BufferGeometry(), material);
 		this.line.translateY(5e-3);
 	}
@@ -170,21 +170,21 @@ var Plot3D = function () {
 
 		var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
 		    _ref$width = _ref.width,
-		    width = _ref$width === undefined ? 1600 : _ref$width,
+		    width = _ref$width === undefined ? $( window ).width() * .98 : _ref$width,
 		    _ref$height = _ref.height,
-		    height = _ref$height === undefined ? 800 : _ref$height,
+		    height = _ref$height === undefined ? $( window ).height() * .98 : _ref$height,
 		    _ref$xmin = _ref.xmin,
-		    xmin = _ref$xmin === undefined ? -1. : _ref$xmin,
+		    xmin = _ref$xmin === undefined ? -1.6 : _ref$xmin,
 		    _ref$xmax = _ref.xmax,
-		    xmax = _ref$xmax === undefined ? 1. : _ref$xmax,
+		    xmax = _ref$xmax === undefined ? 1.6 : _ref$xmax,
 		    _ref$ymin = _ref.ymin,
-		    ymin = _ref$ymin === undefined ? -1. : _ref$ymin,
+		    ymin = _ref$ymin === undefined ? -1.6 : _ref$ymin,
 		    _ref$ymax = _ref.ymax,
-		    ymax = _ref$ymax === undefined ? 1. : _ref$ymax,
+		    ymax = _ref$ymax === undefined ? 1.6 : _ref$ymax,
 		    _ref$zmin = _ref.zmin,
 		    zmin = _ref$zmin === undefined ? 0. : _ref$zmin,
 		    _ref$zmax = _ref.zmax,
-		    zmax = _ref$zmax === undefined ? 1. : _ref$zmax,
+		    zmax = _ref$zmax === undefined ? 1.6 : _ref$zmax,
 		    _ref$display_zmax = _ref.display_zmax,
 		    display_zmax = _ref$display_zmax === undefined ? .3 : _ref$display_zmax,
 		    _ref$controlsDomEleme = _ref.controlsDomElement,
@@ -201,7 +201,7 @@ var Plot3D = function () {
 		this.display_zmax = display_zmax;
 
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 50);
+		this.camera = new THREE.PerspectiveCamera(50, width / height, 0.2, 50);
 
 		this.camera.position.z = 0.36;
 		this.camera.position.x = -0.56;
@@ -210,7 +210,7 @@ var Plot3D = function () {
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setSize(width, height);
 		this.renderer.setPixelRatio(1);
-		this.renderer.setClearColor(0xbbbbbb, 1);
+		this.renderer.setClearColor(0x999999, 1);
 
 		this.domElement = this.renderer.domElement;
 
@@ -222,11 +222,11 @@ var Plot3D = function () {
 		this.orbit = new THREE.OrbitControls(this.camera, controlsDomElement || this.renderer.domElement);
 		this.orbit.enableDamping = true;
 		this.orbit.dampingFactor = 0.25;
-		this.orbit.minPolarAngle = Math.PI * 0.05;
-		this.orbit.maxPolarAngle = Math.PI * 0.7;
-		this.orbit.minDistance = 0.9;
-		this.orbit.maxDistance = 1.5;
-		this.orbit.enableKeys = false;
+		this.orbit.minPolarAngle = 0;
+		this.orbit.maxPolarAngle = Math.PI;
+		this.orbit.minDistance = 0;
+		this.orbit.maxDistance = 100;
+		this.orbit.enableKeys = true;
 		this.orbit.target = new THREE.Vector3(0.5, 0.33 * this.display_zmax, 0.5);
 		this.orbit.onUpdate.push(function () {
 			return requestAnimationFrame(function () {
@@ -273,7 +273,7 @@ var Plot3D = function () {
 	}, {
 		key: 'addCoordinateGrid',
 		value: function addCoordinateGrid() {
-			var n_points = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+			var n_points = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 60;
 
 			var plane = new THREE.GridHelper(0.5, n_points, 0x0000ff, 0x808080);
 			plane.position.x = 0.5;

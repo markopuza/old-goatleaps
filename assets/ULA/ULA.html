@@ -5,132 +5,33 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=820, initial-scale=0.5">
+  <meta name="viewport" content="width=50, initial-scale=0.5">
 
-  <title>ULA visualization</title>
-  <meta name="description" content="Understanding an effective way of sampling from complex distributions with 3d-demonstrations">
+  <title>Sampling visualization</title>
 
-<meta name="twitter:card" value="summary_large_image">
-<meta name="twitter:title" content="Hamiltonian Monte Carlo explained by Alex Rogozhnikov">
-<meta name="twitter:description" content="Understanding an effective way of sampling from complex distributions with 3d-demonstrations">
-<meta name="twitter:url" content="https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">
-<meta name="twitter:image" content="http://arogozhnikov.github.io/images/ml_demonstrations/hmc_explained.png">
-
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Hamiltonian Monte Carlo explained by Alex Rogozhnikov" />
-<meta property="og:description" content="Understanding an effective way of sampling from complex distributions with 3d-demonstrations" />
-<meta property="og:url" content="https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html" />
-<meta property="og:image" content="http://arogozhnikov.github.io/images/ml_demonstrations/hmc_explained.png" />
-
-
-  <!-- <link rel="stylesheet" href="css/main.css"> -->
-  <!--<link rel="stylesheet" href="css/alex.css">-->
-
-  <link rel="canonical" href="http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">
-  <link rel="alternate" type="application/rss+xml" title="Brilliantly wrong" href="http://arogozhnikov.github.io/feed.xml" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
-
-  <link rel="stylesheet" href="scripts/external_scripts/katex/katex.min.css">
-  <script src="scripts/external_scripts/katex/katex.min.js"></script>
-  <script src="scripts/external_scripts/katex/contrib/auto-render.min.js"></script>
-  <script>
-    // can be filled along the way
-    var tex_macros = {};
-
-    var options = {
-        delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "\\[", right: "\\]", display: true},
-            {left: "\\(", right: "\\)", display: false},
-            {left: "`$", right: "$`", display: false},
-            {left: "$", right: "$", display: false}
-        ],
-        macros: tex_macros // I am not sure this is actually working
-    };
-    document.addEventListener("DOMContentLoaded", function() {
-      renderMathInElement(document.body, options);
-    });
-  </script>
 </head>
 
 
   <body>
+
+    <style type="text/css">
+
+        div.controls {
+    			font-size: 13px;
+    			left: 1em;
+          top: 1em;
+          z-index: 1;
+          position: absolute;
+          padding: 0.5em;
+          background-color: rgba(222, 222, 222, 0.6);
+    		}
+      </style>
 
 
 
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
-
-  <article class="post-content">
-    	<style type="textcss">
-		div.demo-wrapper {
-			width: 1600px;
-			margin: auto;
-		}
-
-		div.visualization-wrapper {
-			font-size: 14px;
-			margin-top: 0.5em;
-			margin-bottom: 0.5em;
-		}
-
-		div.controls {
-			margin: auto;
-			padding: 10px 5px;
-			background-color: #eee;
-		}
-
-		input[type=range] {
-			display: block;
-			max-width: 1300px;
-		}
-
-		div.control {
-			text-align: center;
-			display: inline-block;
-			margin: 0 12px;
-			vertical-align: text-top;
-		}
-
-		.explanation-preview {
-			color: #237;
-			cursor: pointer;
-			border-bottom: 1px dotted #237;
-		}
-
-		.explanation-content {
-			display: None;
-		}
-
-		.dataset_control canvas {
-			margin: 4px;
-			cursor: pointer;
-		}
-
-		.dataset_control canvas.selected {
-			outline: 4px solid #bcc;
-		}
-
-		.dataset_control canvas:hover {
-			outline: 5px solid #aca;
-		}
-
-		.alex-remark{
-			position: absolute;
-			right: -160px;
-			width: 120px;
-			top: 50%;
-		}
-		.katex {
-			font-size: 1em !important;
-		}
-
-		.rejected_color {color: #844; }
-		.generated_color {color: #484; }
-		.true_sample_color {color: #44a; }
-	</style>
 
 
 	<div id="demo-wrapper" class="demo-wrapper">
@@ -153,7 +54,7 @@
 			<div class="visualization"></div>
 			<div class="controls">
 				<div class="control" style="text-align: left;">
-					Distribution <br />
+					Distribution  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp [move around using arrows] <br />
 					<div class='dataset_control'></div>
 				</div>
 				<div class="control" style="text-align: left;">
@@ -165,7 +66,20 @@
 					</select>
 					<br />
 				</label>
-				Show <br />
+
+        Method  <br />
+        <select id="method_select_control">
+          <option>ULA</option>
+          <option>tULA</option>
+          <option>tULAc</option>
+          <option>MALA</option>
+          <option>tMALA</option>
+          <option>RWM</option>
+          <option>LM</option>
+          <option>tLM</option>
+      </select>
+
+  				<br /> Show <br />
 				<label>
 					<input type="checkbox" value=1 class="show_generated_control"  checked="checked" /> <span class='generated_color'>generated samples</span>
 					<br />
@@ -178,16 +92,24 @@
 					<input type="checkbox" class="show_true_control" checked="checked" /> <span class='true_sample_color'>true samples</span>
 				</label>
 				</div>
+
+
 				<div class="control">
 					<label>
-						temperature T: <span class="temperature_display" ></span>
-						<input type="range" min="0" max="5" value="4" step="1" class="temperature_control">
+            	<input type="range" min="0" max="9" value="6" step="1" class="temperature_control">
+						Temperature T: <span class="temperature_display" ></span>
+
+            <br />
 					</label>
-					<label>
-						animation: <span class="speed_display" style='font-weight: bold;' ></span>
-						<input type="range" min="0" max="2" value="0" step="1" class="speed_control">
-					</label>
+
+          <label>
+            <input type="range" min="0" max="2" value="0" step="1" class="speed_control">
+						Animation: <span class="speed_display" style='font-weight: bold;' ></span>
+
+					</label> <br />
+
 				</div>
+
 				<div class='control hmc_only_control'>
 					<div class=" ">
 						<label>
@@ -198,26 +120,21 @@
 					<div class="tempering_only_control">
 						<label>
 							tempering α: <span class="tempering_display" ></span>
-							<input type="range" min="0" max="5" value="0" step="1" class="tempering_control">
+							<input type="range" min="0" max="9" value="0" step="1" class="tempering_control">
 						</label>
 					</div>
 				</div>
 
 				<div class="control mh_only_control">
 					<label>
-						step size σ: <span class="spread_display" ></span>
-						<input type="range" min="0" max="8" value="2" step="1" class="spread_control">
+            	<input type="range" min="0" max="9" value="3" step="1" class="spread_control">
+						Step size σ: <span class="spread_display" ></span>
 					</label>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<script>
-		// replacing macros before all the js-stuff
-		var demo_element = document.getElementById('demo-wrapper');
-		demo_element.innerHTML = demo_element.innerHTML.split('\\vx').join('\\mathbf{x}').split('\\vv').join('\\mathbf{v}');
-	</script>
 
 	<!-- only for fadeIn -->
 	<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>

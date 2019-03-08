@@ -10,8 +10,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var rejected_color = [1.0, 0.6, 0.6];
-var accepted_color = [0.6, 1.0, 0.6];
-var true_point_color = [0.6, 0.6, 1.0];
+var accepted_color = [0.1, 1.0, 0.1];
+var true_point_color = [0.1, 0.1, 1.0];
 
 var MCDatasetSelector = function () {
     function MCDatasetSelector(wrapper_div, on_dataset_change) {
@@ -19,7 +19,7 @@ var MCDatasetSelector = function () {
 
         var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
             _ref$n_ticks = _ref.n_ticks,
-            n_ticks = _ref$n_ticks === undefined ? 45 : _ref$n_ticks,
+            n_ticks = _ref$n_ticks === undefined ? 30 : _ref$n_ticks,
             _ref$selected_dataset = _ref.selected_dataset,
             selected_dataset = _ref$selected_dataset === undefined ? 0 : _ref$selected_dataset;
 
@@ -31,6 +31,7 @@ var MCDatasetSelector = function () {
         for (var x_tick = 0; x_tick < n_ticks; x_tick++) {
             this.axis_ticks.push((x_tick + 1.) / (n_ticks + 1));
         }
+
         this.datasets = MCDatasetSelector.collect_toy_datasets(this.axis_ticks);
 
         this.wrapper_div = wrapper_div;
@@ -175,7 +176,7 @@ var MCVisualization = function () {
             _ref2$selected_datase = _ref2.selected_dataset,
             selected_dataset = _ref2$selected_datase === undefined ? 0 : _ref2$selected_datase,
             _ref2$initial_tempera = _ref2.initial_temperature,
-            initial_temperature = _ref2$initial_tempera === undefined ? 4 : _ref2$initial_tempera;
+            initial_temperature = _ref2$initial_tempera === undefined ? 6 : _ref2$initial_tempera;
 
         _classCallCheck(this, MCVisualization);
 
@@ -206,12 +207,18 @@ var MCVisualization = function () {
         this.show_true_control = this.get_by_class('show_true_control');
         this.show_rejected_control = this.get_by_class('show_rejected_control');
 
+        this.algo_control = document.getElementById("method_select_control");
+        this.algorithm = this.algo_control.options[this.algo_control.selectedIndex].value;
+
+
         var redraw = function redraw() {
             _this2.redraw();
         };
         var update = function update() {
             _this2.redraw({ force_restart_animation: false });
         };
+
+        this.algo_control.onchange = redraw;
         this.method_select_control.oninput = redraw;
         this.temperature_control.oninput = redraw;
         this.tempering_control.oninput = redraw;
@@ -227,6 +234,7 @@ var MCVisualization = function () {
 
         this.dataset = new MCDatasetSelector(this.dataset_control, redraw, { selected_dataset: selected_dataset });
         var ticks = this.dataset.axis_ticks;
+
 
         this.plot = new Plot3D(this.main_div, {});
 
@@ -301,6 +309,7 @@ var MCVisualization = function () {
                     y = _distribution$sample2[1];
 
                 var point = [x, y, distribution.energy([x, y]) + random.random_normal(0, 0.001)];
+
                 points.push(this.plot.normalize_point(point));
             }
             this.true_distribution_points.set_points(points, true_point_color);
@@ -333,7 +342,7 @@ var MCVisualization = function () {
                 speed_changed = _ref3$speed_changed === undefined ? false : _ref3$speed_changed;
 
             // collecting parameters
-            var allowedT = [0.001, 0.003, 0.01, 0.03, 0.1, 0.3];
+            var allowedT = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0];
             var T = allowedT[this.temperature_control.value];
             this.temperature_display.innerHTML = T.toString();
 
@@ -349,9 +358,11 @@ var MCVisualization = function () {
             var length = allowed_lengths[this.length_control.value];
             this.length_display.innerHTML = length.toString();
 
-            var allowed_spreads = [0.001, 0.005, 0.01, 0.02, 0.05, 0.1, 0.20, 0.4, 1.0];
+            var allowed_spreads = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0];
             var spread = allowed_spreads[this.mh_spread_control.value];
             this.mh_spread_display.innerHTML = spread.toString();
+
+            var algorithm = this.algo_control.options[this.algo_control.selectedIndex].value;
 
             var method = this.method_select_control.value;
 
@@ -408,21 +419,24 @@ var MCVisualization = function () {
             function animate() {
                 var mc_sampler, iteration, _mc_sampler$generate_, _mc_sampler$generate_2, result, candidate, rejected, _mc_sampler$generate_3, _mc_sampler$generate_4, _result, _candidate, _rejected, trajectory_3d, j;
 
+                var old_candidate = [0, 0, 0];
+
                 return regeneratorRuntime.wrap(function animate$(_context) {
                     while (1) {
+
                         switch (_context.prev = _context.next) {
                             case 0:
-
                                 mc_sampler = new MCSampler(distribution, -0.65, -0.75);
 
                                 mc_sampler.set_temperature(T);
+                                mc_sampler.set_algo(algorithm);
                                 context.generated_points.flush();
                                 context.rejected_points.flush();
                                 iteration = 0;
 
                             case 5:
 
-                                if (!(iteration < 10000)) {
+                                if (!(iteration < 30000)) {
                                     _context.next = 33;
                                     break;
                                 }
@@ -436,6 +450,15 @@ var MCVisualization = function () {
 
                                 context.addCandidate(candidate, rejected);
                                 context.setCurrentPosition(result);
+
+                                if (old_candidate[0] == 0 && old_candidate[0] == 0 && old_candidate[0] == [0]) old_candidate = context.plot.normalize_point(candidate);
+
+                                if (!rejected) {
+                                  context.hmc_trajectory.set_points([context.plot.normalize_point(candidate), old_candidate]);
+                                  old_candidate = context.plot.normalize_point(candidate);
+                                }
+
+
                                 _context.next = 26;
                                 break;
 
@@ -478,12 +501,12 @@ var MCVisualization = function () {
                             case 26:
 
                                 context.plot.redraw();
-                                context.hmc_trajectory.flush();
                                 _context.next = 30;
                                 return context._pause;
 
                             case 30:
                                 iteration++;
+                                context.hmc_trajectory.flush();
                                 _context.next = 5;
                                 break;
 
@@ -507,7 +530,7 @@ var MCVisualization = function () {
     return MCVisualization;
 }();
 
-var mcmc_visualization = new MCVisualization(document.getElementById('mh_visualization_wrapper'), { methods: ['mh'], selected_dataset: 1 });
+var mcmc_visualization = new MCVisualization(document.getElementById('mh_visualization_wrapper'), { methods: ['mh'], selected_dataset: 0 });
 // var hmc_visualization = new MCVisualization(document.getElementById('hmc_visualization_wrapper'), { methods: ['hmc'], enable_tempering: false, selected_dataset: 2 });
 // var hmc_tempering_visualization = new MCVisualization(document.getElementById('hmc_tempering_visualization_wrapper'), { methods: ['hmc'], enable_tempering: true, selected_dataset: 3, initial_temperature: 2 });
 
@@ -539,7 +562,7 @@ var TemperatureVisualization = function () {
             var plot = _arr[_i];
             plot.camera.position.z = 1.8;
             plot.camera.position.y = 0.9;
-            plot.orbit.minDistance = 0.5;
+            plot.orbit.minDistance = 0;
             plot.orbit.maxDistance = 2.0;
             // needed to fight slow scrolling
             plot.orbit.enableDamping = false;
@@ -578,6 +601,7 @@ var TemperatureVisualization = function () {
     _createClass(TemperatureVisualization, [{
         key: 'get_by_class',
         value: function get_by_class(className) {
+
             return this.wrapper_div.getElementsByClassName(className)[0];
         }
     }, {
@@ -693,12 +717,6 @@ var TemperatureVisualization = function () {
 
 var temperature_visualization = new TemperatureVisualization(document.getElementById('temperature_visualization_wrapper'));
 
-// Bind unfolding of descriptions
-$('.explanation-preview').on('click', function () {
-    var name = $(this).attr('data-explained');
-    var found = $.find('.explanation-content[data-explained=' + name + ']');
-    $(found).fadeIn(500);
-});
 
 // testing derivatives
 //function test_derivatives() {
