@@ -210,6 +210,8 @@ var MCVisualization = function () {
         this.algo_control = document.getElementById("method_select_control");
         this.algorithm = this.algo_control.options[this.algo_control.selectedIndex].value;
 
+        this.starting_point_button = document.getElementById("button_sp");
+        this.start_point_control = document.getElementById("starting_point");
 
         var redraw = function redraw() {
             _this2.redraw();
@@ -219,6 +221,7 @@ var MCVisualization = function () {
         };
 
         this.algo_control.onchange = redraw;
+        this.starting_point_button.onclick = redraw;
         this.method_select_control.oninput = redraw;
         this.temperature_control.oninput = redraw;
         this.tempering_control.oninput = redraw;
@@ -363,6 +366,9 @@ var MCVisualization = function () {
             this.mh_spread_display.innerHTML = spread.toString();
 
             var algorithm = this.algo_control.options[this.algo_control.selectedIndex].value;
+            var start_point = this.start_point_control.value;
+            var start_x = parseFloat(start_point.split(',')[0]);
+            var start_y = parseFloat(start_point.split(',')[1]);
 
             var method = this.method_select_control.value;
 
@@ -426,7 +432,7 @@ var MCVisualization = function () {
 
                         switch (_context.prev = _context.next) {
                             case 0:
-                                mc_sampler = new MCSampler(distribution, -0.65, -0.75);
+                                mc_sampler = new MCSampler(distribution, start_x, start_y);
 
                                 mc_sampler.set_temperature(T);
                                 mc_sampler.set_algo(algorithm);
