@@ -176,7 +176,7 @@ var MCVisualization = function () {
             _ref2$selected_datase = _ref2.selected_dataset,
             selected_dataset = _ref2$selected_datase === undefined ? 0 : _ref2$selected_datase,
             _ref2$initial_tempera = _ref2.initial_temperature,
-            initial_temperature = _ref2$initial_tempera === undefined ? 7 : _ref2$initial_tempera;
+            initial_temperature = _ref2$initial_tempera === undefined ? 5 : _ref2$initial_tempera;
 
         _classCallCheck(this, MCVisualization);
 
