@@ -100,7 +100,8 @@ A new layer of complexity can be implanted into the fractal in the following way
 
 
 #### Function and its derivative
-##### Must be a JavaScript expression. Available complex functions: .add(), .sub(), .mul(), .div(), .pow(), .sin(), .cos(), .abs(), .tan()
+##### Must be a JavaScript expression. Available complex functions: .add(), .sub(), .mul(), .div(), .pow(), .sin(), .cos(), .abs(), .tan(); Examples:
+$$ x + y + z\  \equiv\ x.add(y).add(z)\ \qquad sin^2(cos(z)) \ \equiv\  z.cos().sin().pow(2) $$
 ##### Complex number must be entered as "new Complex(real, imag)".
 
 <center>
@@ -138,7 +139,7 @@ A new layer of complexity can be implanted into the fractal in the following way
 </div>
 </center>
 
-#### The color scheme
+#### Color scheme
 ##### Sets the color for a point as a function of n, the number of iterations until convergence. Needs to be a JavaScrip expression.
 
 <center>
