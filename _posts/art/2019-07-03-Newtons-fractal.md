@@ -7,7 +7,7 @@ categories: media maths programming tools
 icon: newtonfractals
 ---
 
-
+<meta property="og:image" content="/assets/image/newton_fractal_gallery/1.png" />
 <script src="/assets/script/jscolor.min.js"></script>
 
 
